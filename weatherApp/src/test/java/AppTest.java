@@ -1,9 +1,3 @@
-import kong.unirest.HttpResponse;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.startup.Tomcat;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AppTest {
 
     private static final Path TEST_JSON = Paths.get("src/test/resources/test.txt");
+    private static final String TEST_REPORT = "src/test/resources/test_report.txt";
+    private static final Path PATH = Paths.get(TEST_REPORT);
     private static String data;
 
     @BeforeAll
@@ -98,9 +94,36 @@ class AppTest {
         assertThat(perHourWeather.size()).isEqualTo(24);
         assertThat(perHourWeather.get("00-00")).isEqualTo("2.2");
         assertThat(perHourWeather.get("00-23")).isEqualTo("10.4");
-
     }
 
+    @Test
+    public void testFillWeatherData() {
+        WeatherDataParser parser = new WeatherDataParser(data);
+        WeatherData weatherData = new WeatherData();
+
+        weatherData.fillWeatherData(parser);
+
+        assertThat(weatherData.getCurrentWeather()).isEqualTo("7.6");
+        assertThat(weatherData.getRegionInfo()).isEqualTo("Novgorod");
+        assertThat(weatherData.getPerHourWeather().get("00-00")).isEqualTo("2.2");
+    }
+
+    @Test
+    public void testWriteWeatherDataInFile() throws IOException {
+        WeatherDataParser parser = new WeatherDataParser(data);
+        WeatherData weatherData = new WeatherData();
+        WeatherWriter writer = new WeatherWriter(weatherData, TEST_REPORT);
+
+        weatherData.fillWeatherData(parser);
+        writer.writeWeatherDataInFile();
+
+        String fileData = Files.readString(PATH);
+
+        assertThat(fileData).isNotEmpty();
+        assertThat(fileData).contains("Russia");
+        assertThat(fileData).contains("2023-10-11");
+        assertThat(fileData).contains("00-23");
+    }
 
 
 

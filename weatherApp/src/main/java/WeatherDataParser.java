@@ -3,6 +3,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,18 +44,20 @@ public class WeatherDataParser {
     @SuppressWarnings("unchecked")
     public Map<String, Map<String, String>> parseWeatherForThreeDays() {
         Map<String, Map<String, String>> weatherForThreeDays = new LinkedHashMap<>();
+        List<Map<String, String>> list = new ArrayList<>();
         String min;
         String max;
         String avg;
         String date;
 
-        Map<String, String> weatherForNextDay = new LinkedHashMap<>();
+
 
         Map<String, List<Map<String, Object>>> forecastData =
                 ((Map<String, List<Map<String, Object>>>) parseDataFromApi().get("forecast"));
         List<Map<String, Object>> forecastdayData = forecastData.get("forecastday");
 
         for (int i = 0; i < 3; i++) {
+            Map<String, String> weatherForNextDay = new LinkedHashMap<>();
             Map<String, String> dayData = ((Map<String, String>) forecastdayData.get(i).get("day"));
             min = String.valueOf(dayData.get("mintemp_c"));
             max = String.valueOf(dayData.get("maxtemp_c"));

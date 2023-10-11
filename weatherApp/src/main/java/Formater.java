@@ -33,7 +33,6 @@ public class Formater {
                     .append("Min: ").append(weather.getValue().get("min")).append("\n")
                     .append("Max: ").append(weather.getValue().get("max")).append("\n")
                     .append("Avg: ").append(weather.getValue().get("avg")).append("\n\n");
-
         }
         return  out.toString();
     }

@@ -8,7 +8,7 @@ public class WeatherServlet extends HttpServlet {
             "https://weatherapi-com.p.rapidapi.com/forecast.json?q=58.3130%2C31.1630%20&days=3";
     public static final String HEADER_NAME = "X-RapidAPI-Key";
     public static final String HEADER_VALUE = "85693fc932mshb3d33fad86f58b7p1cc6bcjsn164c661c6234";
-    public static final String FILE_FOR_REPORT = "report.txt";
+    public static final String REPORT_FILE = "report.txt";
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -20,7 +20,7 @@ public class WeatherServlet extends HttpServlet {
         WeatherData weatherData = new WeatherData();
         weatherData.fillWeatherData(parser);
 
-        Writer writer = new Writer(weatherData, FILE_FOR_REPORT);
+        WeatherWriter writer = new WeatherWriter(weatherData, REPORT_FILE);
         writer.writeWeatherDataInFile();
         writer.openFileAfterWrite();
         writer.writeWeatherDataOnScreen(response);

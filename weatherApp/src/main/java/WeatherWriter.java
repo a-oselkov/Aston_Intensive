@@ -6,13 +6,13 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
-public class Writer extends HttpServlet {
+public class WeatherWriter extends HttpServlet {
     String file;
     WeatherData weatherData;
 
-    public Writer(WeatherData weatherData, String file) {
-        this.file = file;
+    public WeatherWriter(WeatherData weatherData, String file) {
         this.weatherData = weatherData;
+        this.file = file;
     }
 
     public void writeWeatherDataInFile() throws FileNotFoundException {
