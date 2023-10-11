@@ -9,7 +9,7 @@ My implementation of ArrayList with quick sorting
 
 Weather in my region.
 
-The application is launched locally, after launch it is available on port 8000
+The application is launched locally(from App class), after launch it is available on port 8000
 
 http://localhost:8000/
 
