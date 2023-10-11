@@ -3,19 +3,32 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WeatherDataParser {
+/**
+ * Contains methods for processing weather information received from a third-party service.
+ */
+public final class WeatherDataParser {
 
+    /**
+     * String, information received from the response to a request to a third-party service.
+     */
     private final String inputWeatherData;
 
+    /**
+     * Creates an object of the Weather Data Parser type containing information for further processing.
+     * @param inputWeatherData information received from the response to a request to a third-party service.
+     */
     WeatherDataParser(String inputWeatherData) {
         this.inputWeatherData = inputWeatherData;
     }
 
+    /**
+     * Obtaining information for further use and processing.
+     * @return an object for further processing and extraction of information
+     */
     private Map<String, Object> parseDataFromApi() {
         ObjectMapper mapper = new JsonMapper();
         try {
@@ -26,25 +39,41 @@ public class WeatherDataParser {
         }
     }
 
+    /**
+     * Getting information about the region from the total amount of information.
+     * @return a line with information about the region
+     */
     @SuppressWarnings("unchecked")
     public String parseRegionInfo() {
         return  ((Map<String, String>) parseDataFromApi().get("location")).get("region");
     }
 
+    /**
+     * Getting information about the country from the total amount of information .
+     * @return a line with information about the country
+     */
     @SuppressWarnings("unchecked")
     public String parseCountryInfo() {
         return ((Map<String, String>) parseDataFromApi().get("location")).get("country");
     }
 
+    /**
+     * Getting information about the current weather from the total amount of information.
+     * @return a line with information about the current weather
+     */
     @SuppressWarnings("unchecked")
     public String parseCurrentWeatherData() {
         return String.valueOf(((Map<String, Double>) parseDataFromApi().get("current")).get("temp_c"));
     }
 
+    /**
+     * Getting information about the forecast for three days from the total amount of information.
+     * @return Map type object with information about the weather forecast for three days
+     */
     @SuppressWarnings("unchecked")
     public Map<String, Map<String, String>> parseWeatherForThreeDays() {
         Map<String, Map<String, String>> weatherForThreeDays = new LinkedHashMap<>();
-        List<Map<String, String>> list = new ArrayList<>();
+
         String min;
         String max;
         String avg;
@@ -71,6 +100,10 @@ public class WeatherDataParser {
         return weatherForThreeDays;
     }
 
+    /**
+     * Getting information about the hourly weather forecast from the total amount of information.
+     * @return Map type object with information about the hourly weather forecast
+     */
     @SuppressWarnings("unchecked")
     public Map<String, String> parsePerHourWeather() {
         Map<String, String> perHourWeather = new LinkedHashMap<>();

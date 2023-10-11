@@ -25,10 +25,24 @@ import java.util.Objects;
  * And also iterator and clear() method.
  */
 public class MyArrayList<T> implements List<T> {
-
+    /**
+     * Default initial capacity.
+     */
     private static final int DEFAULT_CAPACITY = 10;
+
+    /**
+     * Multiplier for increasing the size of the array
+     */
     private static final int MULTIPLIER = 2;
+
+    /**
+     * Number of elements in the array.
+     */
     private int size = 0;
+
+    /**
+     * An array of objects for storing elements of the MyArrayList instance.
+     */
     private Object[] elements;
 
     /**
