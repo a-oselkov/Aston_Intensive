@@ -5,7 +5,7 @@
 My implementation of ArrayList with quick sorting
 
 
-####  [Homework #2](https://github.com/a-oselkov/Aston_Intensive/tree/main/MyArrayList)
+####  [Homework #2](https://github.com/a-oselkov/Aston_Intensive/tree/main/weatherApp)
 
 Weather in my region.
 
