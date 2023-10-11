@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +39,67 @@ class AppTest {
         assertThat(dataFromApi).contains("forecast");
     }
 
+    @Test
+    public void testParseRegionInfo () {
+        WeatherDataParser parser = new WeatherDataParser(data);
+        String regionInfo;
 
+        regionInfo = parser.parseRegionInfo();
+
+        assertThat(regionInfo).isNotNull();
+        assertThat(regionInfo).isEqualTo("Novgorod");
+    }
+
+    @Test
+    public void testParseCountryInfo () {
+        WeatherDataParser parser = new WeatherDataParser(data);
+        String countryInfo;
+
+        countryInfo = parser.parseCountryInfo();
+
+        assertThat(countryInfo).isNotNull();
+        assertThat(countryInfo).isEqualTo("Russia");
+    }
+
+    @Test
+    public void testParseCurrentWeatherData () {
+        WeatherDataParser parser = new WeatherDataParser(data);
+        String currentWeather;
+
+        currentWeather = parser.parseCurrentWeatherData();
+
+        assertThat(currentWeather).isNotNull();
+        assertThat(currentWeather).isEqualTo("0");
+    }
+
+    @Test
+    public void testParseWeatherForThreeDays () {
+        WeatherDataParser parser = new WeatherDataParser(data);
+        Map<String, Map<String, String>> weatherForThreeDays;
+
+        weatherForThreeDays = parser.parseWeatherForThreeDays();
+
+        assertThat(weatherForThreeDays).isNotNull();
+        assertThat(weatherForThreeDays.size()).isEqualTo(3);
+        assertThat(weatherForThreeDays.get("2023-10-11").size()).isEqualTo(3);
+        assertThat(weatherForThreeDays.get("2023-10-13").size()).isEqualTo(3);
+        assertThat(weatherForThreeDays.get("2023-10-12").get("min")).isEqualTo("6.7");
+
+    }
+
+    @Test
+    public void testParsePerHourWeather () {
+        WeatherDataParser parser = new WeatherDataParser(data);
+        Map<String, String> perHourWeather = new LinkedHashMap<>();
+
+        perHourWeather = parser.parsePerHourWeather();
+
+        assertThat(perHourWeather).isNotNull();
+        assertThat(perHourWeather.size()).isEqualTo(24);
+        assertThat(perHourWeather.get("00-00")).isEqualTo("2.2");
+        assertThat(perHourWeather.get("00-23")).isEqualTo("10.4");
+
+    }
 
 
 
@@ -74,19 +136,6 @@ class AppTest {
 //
 //        HttpResponse<String> request = Request.get(urlName);
 //        assertEquals(200, request.getStatus());
-//        assertThat(responsePost.getHeaders().getFirst("Location")).isEqualTo("/urls");
-
-//        Url url = Querys.getUrlByName(urlName);
-//        HttpResponse<String> respPost = Responses.responseToPost(baseUrl + "/urls/" + url.getId() + "/checks");
-//        assertThat(respPost.getStatus()).isEqualTo(302);
-//        assertThat(respPost.getHeaders().getFirst("Location")).isEqualTo("/urls/" + url.getId());
-//
-//        HttpResponse<String> responseGet = Responses.responseToGet(baseUrl + "/urls/" + url.getId());
-//        assertThat(responseGet.getBody()).contains(SUCCESSFULLY_VERIFIED_MSG);
-//        assertThat(responseGet.getBody()).contains("h1Test", "titleTest", "descriptionTest");
-//
-//        UrlCheck urlCheck = Querys.getUrlCheckByUrl(url);
-//        assertThat(urlCheck).isNotNull();
 
 //        mockServer.shutdown();
 //    }

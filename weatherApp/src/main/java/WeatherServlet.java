@@ -15,10 +15,10 @@ public class WeatherServlet extends HttpServlet {
             throws IOException {
 
         String dataFromApi = Request.get(WEATHER_API_URL, HEADER_NAME, HEADER_VALUE).getBody();
-        WeatherDataParser weatherDataParser = new WeatherDataParser(dataFromApi);
+        WeatherDataParser parser = new WeatherDataParser(dataFromApi);
 
         WeatherData weatherData = new WeatherData();
-        weatherData.fillWeatherData(weatherDataParser);
+        weatherData.fillWeatherData(parser);
 
         Writer writer = new Writer(weatherData, FILE_FOR_REPORT);
         writer.writeWeatherDataInFile();
