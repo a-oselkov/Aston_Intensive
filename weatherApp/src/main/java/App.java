@@ -4,7 +4,7 @@ import org.apache.catalina.startup.Tomcat;
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
+public class App {
 private static int getPort() {
     String port = System.getenv("PORT");
     if (port != null) {

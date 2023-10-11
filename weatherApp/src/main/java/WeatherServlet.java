@@ -1,10 +1,7 @@
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class WeatherServlet extends HttpServlet {
     public static final String WEATHER_API_URL =
@@ -18,24 +15,14 @@ public class WeatherServlet extends HttpServlet {
             throws IOException {
 
         String dataFromApi = Request.get(WEATHER_API_URL, HEADER_NAME, HEADER_VALUE).getBody();
-        WeatherDataHandler weatherDataHandler = new WeatherDataHandler(dataFromApi);
+        WeatherDataParser weatherDataParser = new WeatherDataParser(dataFromApi);
 
         WeatherData weatherData = new WeatherData();
-        weatherData.regionInfo = weatherDataHandler.handleRegionInfo();
-        weatherData.countryInfo = weatherDataHandler.handleCountryInfo();
-        weatherData.currentWeather = weatherDataHandler.handleCurrentWeatherData();
-        weatherData.perHourWeather = weatherDataHandler.handlePerHourWeather();
-        weatherData.weatherForThreeDays = weatherDataHandler.handleWeatherForThreeDays();
-
-        PrintWriter out = response.getWriter();
-        out.println(Formater.formatRegionInfoOutput(weatherData));
-        out.println(Formater.formatCountryInfoOutput(weatherData));
-        out.println("\n" + Formater.formatCurrentWeatherOutput(weatherData));
-        out.println("\n" + Formater.formatPerHourWeatherOutput(weatherData));
-        out.println("\n" + Formater.formatForThreeDayWeatherOutput(weatherData));
+        weatherData.fillWeatherData(weatherDataParser);
 
         Writer writer = new Writer(weatherData, FILE_FOR_REPORT);
-        writer.writeWeatherData();
-        writer.openAfterWrite();
+        writer.writeWeatherDataInFile();
+        writer.openFileAfterWrite();
+        writer.writeWeatherDataOnScreen(response);
     }
 }

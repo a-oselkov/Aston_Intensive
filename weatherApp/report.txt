@@ -1,7 +1,7 @@
 Region: Novgorod
 Country: Russia
 
-Current weather: 7.2
+Current weather: 7.5
 
 Hourly weather forecast for 2023-10-11:
 

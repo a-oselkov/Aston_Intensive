@@ -7,15 +7,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WeatherDataHandler {
+public class WeatherDataParser {
 
     private final String inputWeatherData;
 
-    WeatherDataHandler(String inputWeatherData) {
+    WeatherDataParser(String inputWeatherData) {
         this.inputWeatherData = inputWeatherData;
     }
 
-    private Map<String, Object> handleDataFromApi() {
+    private Map<String, Object> parseDataFromApi() {
         ObjectMapper mapper = new JsonMapper();
         try {
             return mapper.readValue(inputWeatherData, new TypeReference<Map<String, Object>>() {
@@ -26,22 +26,22 @@ public class WeatherDataHandler {
     }
 
     @SuppressWarnings("unchecked")
-    public String handleRegionInfo() {
-        return  ((Map<String, String>) handleDataFromApi().get("location")).get("region");
+    public String parseRegionInfo() {
+        return  ((Map<String, String>) parseDataFromApi().get("location")).get("region");
     }
 
     @SuppressWarnings("unchecked")
-    public String handleCountryInfo() {
-        return ((Map<String, String>) handleDataFromApi().get("location")).get("country");
+    public String parseCountryInfo() {
+        return ((Map<String, String>) parseDataFromApi().get("location")).get("country");
     }
 
     @SuppressWarnings("unchecked")
-    public String handleCurrentWeatherData() {
-        return String.valueOf(((Map<String, Double>) handleDataFromApi().get("current")).get("temp_c"));
+    public String parseCurrentWeatherData() {
+        return String.valueOf(((Map<String, Double>) parseDataFromApi().get("current")).get("temp_c"));
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Map<String, String>> handleWeatherForThreeDays() {
+    public Map<String, Map<String, String>> parseWeatherForThreeDays() {
         Map<String, Map<String, String>> weatherForThreeDays = new LinkedHashMap<>();
         String min;
         String max;
@@ -51,7 +51,7 @@ public class WeatherDataHandler {
         Map<String, String> weatherForNextDay = new LinkedHashMap<>();
 
         Map<String, List<Map<String, Object>>> forecastData =
-                ((Map<String, List<Map<String, Object>>>) handleDataFromApi().get("forecast"));
+                ((Map<String, List<Map<String, Object>>>) parseDataFromApi().get("forecast"));
         List<Map<String, Object>> forecastdayData = forecastData.get("forecastday");
 
         for (int i = 0; i < 3; i++) {
@@ -71,11 +71,11 @@ public class WeatherDataHandler {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, String> handlePerHourWeather() {
+    public Map<String, String> parsePerHourWeather() {
         Map<String, String> perHourWeather = new LinkedHashMap<>();
 
         Map<String, List<Map<String, Object>>> forecastData =
-                ((Map<String, List<Map<String, Object>>>) handleDataFromApi().get("forecast"));
+                ((Map<String, List<Map<String, Object>>>) parseDataFromApi().get("forecast"));
         List<Map<String, Object>> forecastdayData = forecastData.get("forecastday");
 
         List<Map<String, Object>> hourlyWeather = (List<Map<String, Object>>) forecastdayData.get(0).get("hour");
