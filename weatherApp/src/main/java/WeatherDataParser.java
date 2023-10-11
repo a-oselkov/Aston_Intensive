@@ -50,8 +50,6 @@ public class WeatherDataParser {
         String avg;
         String date;
 
-
-
         Map<String, List<Map<String, Object>>> forecastData =
                 ((Map<String, List<Map<String, Object>>>) parseDataFromApi().get("forecast"));
         List<Map<String, Object>> forecastdayData = forecastData.get("forecastday");

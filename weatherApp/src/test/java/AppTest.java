@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -123,49 +124,10 @@ class AppTest {
         assertThat(fileData).contains("Russia");
         assertThat(fileData).contains("2023-10-11");
         assertThat(fileData).contains("00-23");
+
+        //Очистка файла
+        PrintWriter wr = new PrintWriter(TEST_REPORT);
+        wr.print("");
+        wr.close();
     }
-
-
-
-
-
-
-
-//    private static Tomcat app;
-//
-//    @BeforeAll
-//    public static void beforeAll() throws LifecycleException {
-//        app = App.getApp(0);
-//        app.start();
-//        app.getServer().await();
-//    }
-//
-//    @Test
-//    void testCheckUrl() throws IOException, LifecycleException {
-//
-//        Path path = Paths.get("test.html").toAbsolutePath().normalize();
-//        String testHtml = Files.readString(path);
-//
-//        Request.get(WeatherServlet.WEATHER_API_URL, WeatherServlet.HEADER_NAME, WeatherServlet.HEADER_VALUE).getBody();
-//
-//        MockWebServer mockServer = new MockWebServer();
-//        MockResponse mockedResponse = new MockResponse()
-//                .setBody(Request.get(WeatherServlet.WEATHER_API_URL, WeatherServlet.HEADER_NAME, WeatherServlet.HEADER_VALUE).getBody());
-//
-//        mockServer.enqueue(mockedResponse);
-//        mockServer.start();
-//
-//        String urlName = mockServer.url("/").toString().replaceAll("/$", "");
-//
-//        HttpResponse<String> request = Request.get(urlName);
-//        assertEquals(200, request.getStatus());
-
-//        mockServer.shutdown();
-//    }
-//
-//    @AfterAll
-//    public static void afterAll() throws LifecycleException {
-//        app.stop();
-//    }
-
 }
