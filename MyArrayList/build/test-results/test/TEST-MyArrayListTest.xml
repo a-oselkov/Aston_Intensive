@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MyArrayListTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-09T11:32:14" hostname="sashaPc" time="0.014">
+<testsuite name="MyArrayListTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2023-10-09T23:32:55" hostname="sashaPc" time="0.036">
   <properties/>
-  <testcase name="testSet()" classname="MyArrayListTest" time="0.014"/>
+  <testcase name="testAdd()" classname="MyArrayListTest" time="0.013"/>
+  <testcase name="testSet()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testClear()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testSize()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testRemoveByIndex()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testRemoveByValue()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testRetainAll()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testAddAllByIndex()" classname="MyArrayListTest" time="0.002"/>
+  <testcase name="testContainsAll()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testContains()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="iteratorTest()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testIndexOfLastIndexOf()" classname="MyArrayListTest" time="0.0"/>
+  <testcase name="testAddAll()" classname="MyArrayListTest" time="0.0"/>
+  <testcase name="testRemoveAll()" classname="MyArrayListTest" time="0.001"/>
+  <testcase name="testQuickSort()" classname="MyArrayListTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
