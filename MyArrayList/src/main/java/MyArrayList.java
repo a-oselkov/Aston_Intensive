@@ -3,7 +3,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  * Implementation of the List interface, which is based on an array with the possibility of resizing.
@@ -498,6 +500,12 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public ListIterator<T> listIterator(int index) {
         return new ArrayList<T>().listIterator(index);
+    }
+
+    public static void main(String[] args) {
+        Map<Integer, Integer> in = new TreeMap<>();
+        in.put(null,null);
+
     }
 }
 

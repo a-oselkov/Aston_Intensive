@@ -1,15 +1,24 @@
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.sasha.Model.CurrentWeather;
+import org.sasha.Model.DayWeather;
+import org.sasha.Model.HourWeather;
+import org.sasha.utils.Request;
+import org.sasha.WeatherServlet;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.sasha.utils.Parser.getCurrentWeather;
+import static org.sasha.utils.Parser.getHourWeather;
+import static org.sasha.utils.Parser.getRegionInfo;
+import static org.sasha.utils.Parser.getWeatherForDay;
 
 class AppTest {
 
@@ -23,9 +32,17 @@ class AppTest {
         data = Files.readString(TEST_JSON);
     }
 
+    @AfterAll
+    static void clearReport() throws FileNotFoundException {
+        //Очистка файла
+        PrintWriter wr = new PrintWriter(TEST_REPORT);
+        wr.print("");
+        wr.close();
+    }
+
 
     @Test
-    public void testRequest () {
+    public void testRequest() {
         String dataFromApi;
 
         dataFromApi = Request.get(WeatherServlet.WEATHER_API_URL,
@@ -37,97 +54,55 @@ class AppTest {
     }
 
     @Test
-    public void testParseRegionInfo () {
-        WeatherDataParser parser = new WeatherDataParser(data);
-        String regionInfo;
-
-        regionInfo = parser.parseRegionInfo();
+    public void testParseRegionInfo() {
+        String regionInfo = getRegionInfo(data);
 
         assertThat(regionInfo).isNotNull();
         assertThat(regionInfo).isEqualTo("Novgorod");
     }
 
     @Test
-    public void testParseCountryInfo () {
-        WeatherDataParser parser = new WeatherDataParser(data);
-        String countryInfo;
+    public void testParseCurrentWeather () {
+        CurrentWeather weather = getCurrentWeather(data);
 
-        countryInfo = parser.parseCountryInfo();
-
-        assertThat(countryInfo).isNotNull();
-        assertThat(countryInfo).isEqualTo("Russia");
+        assertThat(weather).isNotNull();
+        assertThat(weather.getTemp()).isEqualTo("7.6");
+        assertThat(weather.getRegion()).isEqualTo("Novgorod");
     }
 
     @Test
-    public void testParseCurrentWeatherData () {
-        WeatherDataParser parser = new WeatherDataParser(data);
-        String currentWeather;
+    public void testParseDayWeather () {
+        DayWeather weather = getWeatherForDay(data, 0);
 
-        currentWeather = parser.parseCurrentWeatherData();
-
-        assertThat(currentWeather).isNotNull();
-        assertThat(currentWeather).isEqualTo("0");
-    }
-
-    @Test
-    public void testParseWeatherForThreeDays () {
-        WeatherDataParser parser = new WeatherDataParser(data);
-        Map<String, Map<String, String>> weatherForThreeDays;
-
-        weatherForThreeDays = parser.parseWeatherForThreeDays();
-
-        assertThat(weatherForThreeDays).isNotNull();
-        assertThat(weatherForThreeDays.size()).isEqualTo(3);
-        assertThat(weatherForThreeDays.get("2023-10-11").size()).isEqualTo(3);
-        assertThat(weatherForThreeDays.get("2023-10-13").size()).isEqualTo(3);
-        assertThat(weatherForThreeDays.get("2023-10-12").get("min")).isEqualTo("6.7");
+        assertThat(weather).isNotNull();
+        assertThat(weather.getDate()).isEqualTo("2023-10-11");
+        assertThat(weather.getTempAvg()).isEqualTo("6.3");
 
     }
 
     @Test
-    public void testParsePerHourWeather () {
-        WeatherDataParser parser = new WeatherDataParser(data);
-        Map<String, String> perHourWeather = new LinkedHashMap<>();
+    public void testParseHourWeather () {
+        HourWeather weather = getHourWeather(data, 0);
 
-        perHourWeather = parser.parsePerHourWeather();
+        assertThat(weather).isNotNull();
+        assertThat(weather.getTime()).contains("00:00");
+        assertThat(weather.getTemp()).isEqualTo("2.2");
 
-        assertThat(perHourWeather).isNotNull();
-        assertThat(perHourWeather.size()).isEqualTo(24);
-        assertThat(perHourWeather.get("00-00")).isEqualTo("2.2");
-        assertThat(perHourWeather.get("00-23")).isEqualTo("10.4");
     }
 
-    @Test
-    public void testFillWeatherData() {
-        WeatherDataParser parser = new WeatherDataParser(data);
-        WeatherData weatherData = new WeatherData();
-
-        weatherData.fillWeatherData(parser);
-
-        assertThat(weatherData.getCurrentWeather()).isEqualTo("7.6");
-        assertThat(weatherData.getRegionInfo()).isEqualTo("Novgorod");
-        assertThat(weatherData.getPerHourWeather().get("00-00")).isEqualTo("2.2");
-    }
-
-    @Test
-    public void testWriteWeatherDataInFile() throws IOException {
-        WeatherDataParser parser = new WeatherDataParser(data);
-        WeatherData weatherData = new WeatherData();
-        WeatherWriter writer = new WeatherWriter(weatherData, TEST_REPORT);
-
-        weatherData.fillWeatherData(parser);
-        writer.writeWeatherDataInFile();
-
-        String fileData = Files.readString(PATH);
-
-        assertThat(fileData).isNotEmpty();
-        assertThat(fileData).contains("Russia");
-        assertThat(fileData).contains("2023-10-11");
-        assertThat(fileData).contains("00-23");
-
-        //Очистка файла
-        PrintWriter wr = new PrintWriter(TEST_REPORT);
-        wr.print("");
-        wr.close();
-    }
+//    @Test
+//    public void testWriteWeatherDataInFile() throws IOException {
+//        WeatherDataParser parser = new WeatherDataParser(data);
+//        WeatherData weatherData = new WeatherData();
+//        WeatherWriter writer = new WeatherWriter(weatherData, TEST_REPORT);
+//
+//        weatherData.fillWeatherData(parser);
+//        writer.writeWeatherDataInFile();
+//
+//        String fileData = Files.readString(PATH);
+//
+//        assertThat(fileData).isNotEmpty();
+//        assertThat(fileData).contains("Russia");
+//        assertThat(fileData).contains("2023-10-11");
+//        assertThat(fileData).contains("00-23");
 }

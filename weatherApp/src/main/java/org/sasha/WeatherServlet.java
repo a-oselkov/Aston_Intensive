@@ -1,7 +1,19 @@
+package org.sasha;
+
+import org.sasha.Model.CurrentWeather;
+import org.sasha.utils.Formater;
+import org.sasha.utils.Request;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+
+import static org.sasha.utils.Parser.getCurrentWeather;
 
 
 /**
@@ -50,14 +62,21 @@ public class WeatherServlet extends HttpServlet {
             throws IOException {
 
         String dataFromApi = Request.get(WEATHER_API_URL, HEADER_NAME, HEADER_VALUE).getBody();
-        WeatherDataParser parser = new WeatherDataParser(dataFromApi);
+        
+        CurrentWeather currentWeather = getCurrentWeather(dataFromApi);
+        Formater formater = new Formater(currentWeather, dataFromApi, 3, 24);
 
-        WeatherData weatherData = new WeatherData();
-        weatherData.fillWeatherData(parser);
+        PrintWriter out = response.getWriter();
+        
+        out.write(formater.formatAllOutput());
 
-        WeatherWriter writer = new WeatherWriter(weatherData, REPORT_FILE);
-        writer.writeWeatherDataInFile();
-        writer.openFileAfterWrite();
-        writer.writeWeatherDataOnScreen(response);
+        PrintWriter writer = new PrintWriter(REPORT_FILE);
+        writer.write(formater.formatAllOutput());
+        writer.close();
+
+        File f = new File(REPORT_FILE);
+        Desktop desktop = Desktop.getDesktop();
+        desktop.open(f);
+
     }
 }
