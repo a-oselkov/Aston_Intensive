@@ -3,12 +3,12 @@ package org.sasha.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 @AllArgsConstructor
-public class HourWeather {
-    private String region;
-    private String time;
+public class TownWeather {
+    Long id;
+    private String name;
     private String temp;
+    private String feelsLikeTemp;
+    private String cloud;
 }

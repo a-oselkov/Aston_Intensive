@@ -1,13 +1,8 @@
 package org.sasha.utils;
 
 import lombok.AllArgsConstructor;
-import org.sasha.Model.CurrentWeather;
-import org.sasha.Model.DayWeather;
-import org.sasha.Model.HourWeather;
-
-import static org.sasha.utils.Parser.getHourWeather;
-import static org.sasha.utils.Parser.getWeatherForDay;
-
+import org.sasha.dto.WeatherDto.WeatherDto;
+import org.sasha.service.WeatherService;
 
 /**
  * Contains methods for generating the output of the received weather information.
@@ -15,22 +10,28 @@ import static org.sasha.utils.Parser.getWeatherForDay;
 @AllArgsConstructor
 public final class Formater {
 
-    private CurrentWeather currentWeather;
-    private String dataFromApi;
-    private int dayCount = 3 ;
-    private int hourCount = 24;
+    public static final int DAY_COUNT = 2;
+    public static final int HOUR_COUNT = 23;
 
-    public String formatCurrentWeatherOutput(CurrentWeather weather) {
-        return "Region: " + weather.getRegion()
-                + "\nCurrent weather: " + weather.getTemp();
+    private String dataFromApi;
+
+    private WeatherService weatherService;
+
+    public String formatCurrentWeatherOutput() {
+        WeatherDto weather = weatherService.getWetherInfo(dataFromApi);
+        return "Region: " + weather.getLocation().getRegion() +
+                "\nToday is: " + weather.getLocation().getLocaltime() +
+                "\n\nCurrent weather: " + weather.getCurrent().getTemp_c();
     }
 
-    public String formatPerHourWeatherOutput(String dataFromApi, int hourCount) {
+    public String formatPerHourWeatherOutput(String dataFromApi) {
         StringBuilder out = new StringBuilder();
-        for (int hour = 0; hour < hourCount; hour++) {
-            HourWeather weather = getHourWeather(dataFromApi, hour);
-            out.append(getTime(weather.getTime()))
-                    .append(" ").append(weather.getTemp()).append("\n");
+        for (int hour = 0; hour < HOUR_COUNT; hour++) {
+            WeatherDto weather = weatherService.getWetherInfo(dataFromApi);
+            out.append(getTime(weather.getForecast().getForecastDay().get(0)
+                            .getHours().get(hour).getTime()))
+                    .append(" ").append(weather.getForecast().getForecastDay().get(0)
+                            .getHours().get(hour).getTemp_c()).append("\n");
         }
         return out.toString();
     }
@@ -40,22 +41,25 @@ public final class Formater {
         return time.substring(index);
     }
 
-    public String formatForThreeDayWeatherOutput(String dataFromApi, int dayCount) {
+    public String formatForThreeDayWeatherOutput(String dataFromApi) {
         StringBuilder out = new StringBuilder();
-        for (int day = 0; day < dayCount; day++) {
-            DayWeather weather = getWeatherForDay(dataFromApi, day);
-            out.append(weather.getDate()).append("\n")
-                    .append("min ").append(weather.getTempMin()).append("\n")
-                    .append("max ").append(weather.getTempMax()).append("\n")
-                    .append("avg ").append(weather.getTempAvg()).append("\n")
+        for (int day = 0; day <= DAY_COUNT; day++) {
+            WeatherDto weather = weatherService.getWetherInfo(dataFromApi);
+            out.append(weather.getForecast().getForecastDay().get(day).getDate()).append("\n")
+                    .append("min ").append(weather.getForecast().getForecastDay()
+                            .get(day).getDay().getMintemp_c()).append("\n")
+                    .append("max ").append(weather.getForecast().getForecastDay()
+                            .get(day).getDay().getMaxtemp_c()).append("\n")
+                    .append("avg ").append(weather.getForecast().getForecastDay()
+                            .get(day).getDay().getAvgtemp_c()).append("\n")
                     .append("\n");
         }
         return out.toString();
     }
 
     public String formatAllOutput() {
-        return formatCurrentWeatherOutput(currentWeather) + "\n\nHourly forecast for today:\n"
-        + formatPerHourWeatherOutput(dataFromApi, hourCount) + "\nForecast for 3 days:\n"
-        + formatForThreeDayWeatherOutput(dataFromApi, dayCount);
+        return formatCurrentWeatherOutput() + "\n\nHourly forecast for today:\n"
+        + formatPerHourWeatherOutput(dataFromApi) + "\nForecast for 3 days:\n"
+        + formatForThreeDayWeatherOutput(dataFromApi);
     }
 }
