@@ -2,8 +2,6 @@ package org.sasha.utils;
 
 import lombok.AllArgsConstructor;
 import org.sasha.dto.WeatherDto.WeatherDto;
-import org.sasha.service.WeatherService;
-import org.sasha.service.impl.WeatherServiceImpl;
 
 /**
  * Contains methods for generating the output of the received weather information.

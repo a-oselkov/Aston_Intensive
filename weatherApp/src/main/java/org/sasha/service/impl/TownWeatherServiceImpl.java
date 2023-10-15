@@ -11,9 +11,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.sasha.utils.Parser.parseDataFromApi;
-
-
 public class TownWeatherServiceImpl implements TownWeatherService {
 
     private final TownWeatherDao townWeatherDao = new TownWeatherDao();

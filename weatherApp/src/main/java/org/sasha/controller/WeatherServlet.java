@@ -14,8 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static org.sasha.utils.Parser.parseDataFromApi;
-
 /**
  * Servlet class.
  * Processes a GET request to endpoint "/".
