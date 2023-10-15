@@ -23,12 +23,4 @@ public final class Parser {
             throw new RuntimeException("data parsing error");
         }
     }
-    public static TownWeatherDto getTownWeather(String dataFromApi) {
-        WeatherDto weather = parseDataFromApi(dataFromApi);
-        String name = weather.getLocation().getRegion();
-        String temp = weather.getCurrent().getTemp_c();
-        String feelsLike = weather.getCurrent().getFeelslike_c();
-        String cloud = weather.getCurrent().getCloud();
-        return new TownWeatherDto(name, temp, feelsLike, cloud);
-    }
 }

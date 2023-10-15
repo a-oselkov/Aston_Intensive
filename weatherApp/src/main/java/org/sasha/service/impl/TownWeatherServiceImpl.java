@@ -2,12 +2,16 @@ package org.sasha.service.impl;
 
 import org.sasha.Model.TownWeather;
 import org.sasha.dao.TownWeatherDao;
+import org.sasha.dao.WeatherDao;
 import org.sasha.dto.TownWeatherDto;
+import org.sasha.dto.WeatherDto.WeatherDto;
 import org.sasha.service.TownWeatherService;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
+import static org.sasha.utils.Parser.parseDataFromApi;
 
 
 public class TownWeatherServiceImpl implements TownWeatherService {
@@ -32,5 +36,19 @@ public class TownWeatherServiceImpl implements TownWeatherService {
     @Override
     public void deleteById(Long id) throws SQLException {
         townWeatherDao.deleteById(id);
+    }
+
+    @Override
+    public TownWeatherDto getTownWeatherData(String weatherApiUrl) {
+        WeatherDao weatherDao = new WeatherDao();
+        WeatherDto weather = weatherDao.getWeatherData(weatherApiUrl);
+
+        String name = weather.getLocation().getRegion();
+        String temp = weather.getCurrent().getTemp_c();
+        String feelsLike = weather.getCurrent().getFeelslike_c();
+        String cloud = weather.getCurrent().getCloud();
+
+        return new TownWeatherDto(name, temp, feelsLike, cloud);
+
     }
 }

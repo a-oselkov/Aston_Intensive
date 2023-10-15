@@ -3,7 +3,6 @@ package org.sasha.controller;
 import org.sasha.dto.TownWeatherDto;
 import org.sasha.service.TownWeatherService;
 import org.sasha.service.impl.TownWeatherServiceImpl;
-import org.sasha.utils.Request;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.sasha.controller.WeatherServlet.MOSCOW;
-import static org.sasha.utils.Parser.getTownWeather;
 
 public class TownWeatherServlet extends HttpServlet {
 
@@ -42,13 +40,11 @@ public class TownWeatherServlet extends HttpServlet {
      *                     the GET request
      */
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+
 
         for (String town : towns) {
-            String data = Request.get(town).getBody();
-
-            TownWeatherDto townWeather = getTownWeather(data);
+            TownWeatherDto townWeather = townWeatherService.getTownWeatherData(town);
             townWeatherService.save(townWeather);
         }
 

@@ -1,13 +1,13 @@
 package org.sasha.dao;
 
 import org.sasha.dto.WeatherDto.WeatherDto;
-import org.sasha.config.DBConfig;
+import org.sasha.utils.Request;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import static org.sasha.utils.Parser.parseDataFromApi;
 
 public class WeatherDao {
-
+    public WeatherDto getWeatherData (String weaterApiUrl) {
+        String dataFromApi = Request.get(weaterApiUrl).getBody();
+        return parseDataFromApi(dataFromApi);
+    }
 }

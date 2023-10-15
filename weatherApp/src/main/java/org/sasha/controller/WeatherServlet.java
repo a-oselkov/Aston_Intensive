@@ -5,11 +5,12 @@ import org.sasha.dto.WeatherDto.WeatherDto;
 import org.sasha.service.WeatherService;
 import org.sasha.service.impl.WeatherServiceImpl;
 import org.sasha.utils.Formater;
-import org.sasha.utils.Request;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -28,9 +29,6 @@ import static org.sasha.utils.Parser.parseDataFromApi;
 
 public class WeatherServlet extends HttpServlet {
 
-    /**
-     * The address of the third-party service to which the request for weather information will be sent.
-     */
     public static final String MOSCOW =
             "http://api.weatherapi.com/v1/forecast.json?key=cab6006614334d85a8f181853231310&q=moscow&days=3&aqi=no&alerts=no";
 
@@ -54,12 +52,9 @@ public class WeatherServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        WeatherDto weatherData = weatherService.getWetherData(MOSCOW);
 
-        String data = Request.get(MOSCOW).getBody();
-
-        WeatherDto w = parseDataFromApi(data);
-
-        Formater formater = new Formater(data, weatherService);
+        Formater formater = new Formater(weatherData);
 
         PrintWriter out = response.getWriter();
         out.write(formater.formatAllOutput());
@@ -68,8 +63,8 @@ public class WeatherServlet extends HttpServlet {
         writer.write(formater.formatAllOutput());
         writer.close();
 
-//        File f = new File(REPORT_FILE);
-//        Desktop desktop = Desktop.getDesktop();
-//        desktop.open(f);
+        File f = new File(REPORT_FILE);
+        Desktop desktop = Desktop.getDesktop();
+        desktop.open(f);
     }
 }
