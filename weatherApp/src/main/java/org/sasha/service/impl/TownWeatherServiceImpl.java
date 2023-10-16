@@ -36,6 +36,11 @@ public class TownWeatherServiceImpl implements TownWeatherService {
     }
 
     @Override
+    public void deleteAll() {
+        townWeatherDao.deleteAll();
+    }
+
+    @Override
     public TownWeatherDto getTownWeatherData(String weatherApiUrl) {
         WeatherDao weatherDao = new WeatherDao();
         WeatherDto weather = weatherDao.getWeatherData(weatherApiUrl);

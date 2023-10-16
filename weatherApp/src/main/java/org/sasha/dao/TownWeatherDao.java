@@ -8,7 +8,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +19,10 @@ public class TownWeatherDao {
 
     public void save(TownWeatherDto weather) {
         String sql = "INSERT INTO town_weather (name, temp, feels_like, cloud) VALUES (?, ?, ?, ?)";
-        try (Connection connection = DBConfig.getConnection();
+        try (
+                Connection connection = DBConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setString(1, weather.getName());
             preparedStatement.setString(2, weather.getTemp());
             preparedStatement.setString(3, weather.getFeelsLikeTemp());
@@ -73,6 +78,17 @@ public class TownWeatherDao {
                 preparedStatement.setLong(1, id);
                 preparedStatement.executeUpdate();
             }
+        }
+    }
+
+    public void deleteAll() {
+        String sql = "TRUNCATE town_weather";
+        try (
+                Connection connection = DBConfig.getConnection();
+                Statement statement = connection.createStatement();) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

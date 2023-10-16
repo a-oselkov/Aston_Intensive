@@ -1,5 +1,6 @@
 package org.sasha.controller;
 
+import org.sasha.Model.TownWeather;
 import org.sasha.dto.TownWeatherDto;
 import org.sasha.service.TownWeatherService;
 import org.sasha.service.impl.TownWeatherServiceImpl;
@@ -8,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.sasha.controller.WeatherServlet.MOSCOW;
@@ -40,20 +44,27 @@ public class TownWeatherServlet extends HttpServlet {
      *                     the GET request
      */
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-
+        //townWeatherService.deleteAll();
+        List<TownWeather> townsW;
         for (String town : towns) {
             TownWeatherDto townWeather = townWeatherService.getTownWeatherData(town);
             townWeatherService.save(townWeather);
         }
 
         try {
+            townsW = townWeatherService.findAll();
             System.out.println(townWeatherService.findById(1L));
-            townWeatherService.deleteById(1L);
             System.out.println(townWeatherService.findAll());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        Collections.sort(townsW);
+        PrintWriter out = response.getWriter();
+        out.write("MAX TEMP: " + townsW.get(townsW.size() - 1).getName() + " " +
+                townsW.get(townsW.size() - 1).getTemp());
+        out.write("\n\nMIN TEMP: " + townsW.get(0).getName() + " " +
+                townsW.get(0).getTemp());
     }
 }

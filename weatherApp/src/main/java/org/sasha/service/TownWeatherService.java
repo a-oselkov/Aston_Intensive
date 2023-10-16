@@ -12,5 +12,7 @@ public interface TownWeatherService {
     Optional<TownWeather> findById(Long id) throws SQLException;
     List<TownWeather> findAll() throws SQLException;
     void deleteById(Long id) throws SQLException;
+    void deleteAll();
     TownWeatherDto getTownWeatherData(String weatherApiUrl);
+
 }
