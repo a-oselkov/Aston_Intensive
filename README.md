@@ -14,3 +14,6 @@ The application is launched locally(from App class), after launch it is availabl
 http://localhost:8000/
 
 **GET&nbsp;&nbsp;"/"&nbsp;&nbsp;** Output on the current weather, hourly forecast, forecast for three days. Writing information to a file - the file will be opened automatically. File "report.txt " located in the root directory of the application.
+
+**GET&nbsp;&nbsp;"/t"&nbsp;&nbsp;** Output minimum and maximum temperature of cities from the database.
+
