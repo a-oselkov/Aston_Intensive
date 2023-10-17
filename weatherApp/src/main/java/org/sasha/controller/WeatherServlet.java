@@ -6,6 +6,8 @@ import org.sasha.service.WeatherService;
 import org.sasha.service.impl.WeatherServiceImpl;
 import org.sasha.utils.Formater;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,7 +50,7 @@ public class WeatherServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+            throws IOException, ServletException {
 
         WeatherDto weatherData = weatherService.getWetherData(MOSCOW);
 
@@ -57,12 +59,15 @@ public class WeatherServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.write(formater.formatAllOutput());
 
-        PrintWriter writer = new PrintWriter(REPORT_FILE);
-        writer.write(formater.formatAllOutput());
-        writer.close();
+//        PrintWriter writer = new PrintWriter(REPORT_FILE);
+//        writer.write(formater.formatAllOutput());
+//        writer.close();
 
-        File f = new File(REPORT_FILE);
-        Desktop desktop = Desktop.getDesktop();
-        desktop.open(f);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/first_view.jsp");
+        requestDispatcher.forward(request, response);
+
+//        File f = new File(REPORT_FILE);
+//        Desktop desktop = Desktop.getDesktop();
+//        desktop.open(f);
     }
 }

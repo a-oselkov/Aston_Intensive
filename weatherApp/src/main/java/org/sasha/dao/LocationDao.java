@@ -15,17 +15,33 @@ import java.util.Optional;
 
 public class LocationDao {
     public void save(LocationDto dto) {
-        String sql = "INSERT INTO location (region, country, local_time) VALUES (?, ?, ?)";
-        try (
-                Connection connection = DBConfig.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        if (findByRegion(dto.getRegion()).isEmpty()) {
+            String sql = "INSERT INTO location (region, country, local_time) VALUES (?, ?, ?)";
+            try (
+                    Connection connection = DBConfig.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString(1, dto.getRegion());
-            preparedStatement.setString(2, dto.getCountry());
-            preparedStatement.setString(3, dto.getLocaltime());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+                preparedStatement.setString(1, dto.getRegion());
+                preparedStatement.setString(2, dto.getCountry());
+                preparedStatement.setString(3, dto.getLocaltime());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            Location location = findByRegion(dto.getRegion()).get();
+            location.setLocaltime(dto.getLocaltime());
+            String sql = "UPDATE location SET local_time = ?";
+            try (
+                    Connection connection = DBConfig.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+                preparedStatement.setString(1, dto.getLocaltime());
+//                preparedStatement.setString(2, dto.getRegion());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -38,7 +54,28 @@ public class LocationDao {
             if (resultSet.next()) {
                 String region = resultSet.getString("region");
                 String country = resultSet.getString("country");
-                String localtime = resultSet.getString("localtime");
+                String localtime = resultSet.getString("local_time");
+
+                Location location = new Location(id, region, country, localtime);
+                return Optional.of(location);
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Optional<Location> findByRegion(String name) {
+        String sql = "SELECT * FROM location WHERE region = ?";
+        try (Connection connection = DBConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String region = resultSet.getString("region");
+                String country = resultSet.getString("country");
+                String localtime = resultSet.getString("local_time");
 
                 Location location = new Location(id, region, country, localtime);
                 return Optional.of(location);
@@ -59,7 +96,7 @@ public class LocationDao {
                 Long id = resultSet.getLong("id");
                 String region = resultSet.getString("region");
                 String country = resultSet.getString("country");
-                String localtime = resultSet.getString("localtime");
+                String localtime = resultSet.getString("local_time");
 
                 Location location = new Location(id, region, country, localtime);
                 result.add(location);
