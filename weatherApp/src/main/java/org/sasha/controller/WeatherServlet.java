@@ -1,8 +1,17 @@
 package org.sasha.controller;
 
+import org.sasha.dto.TownWeatherDto;
+import org.sasha.dto.WeatherDto.CurrentDto;
+import org.sasha.dto.WeatherDto.LocationDto;
 import org.sasha.dto.WeatherDto.WeatherDto;
 
+import org.sasha.service.CurrentWeatherService;
+import org.sasha.service.LocationService;
+import org.sasha.service.TownWeatherService;
 import org.sasha.service.WeatherService;
+import org.sasha.service.impl.CurrentWeatherServiceImpl;
+import org.sasha.service.impl.LocationServiseImpl;
+import org.sasha.service.impl.TownWeatherServiceImpl;
 import org.sasha.service.impl.WeatherServiceImpl;
 import org.sasha.utils.Formater;
 
@@ -16,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static org.sasha.utils.Request.getApiUrl;
+
 /**
  * Servlet class.
  * Processes a GET request to endpoint "/".
@@ -28,15 +39,15 @@ import java.io.PrintWriter;
  */
 
 public class WeatherServlet extends HttpServlet {
-
-    public static final String MOSCOW =
-            "http://api.weatherapi.com/v1/forecast.json?key=cab6006614334d85a8f181853231310&q=moscow&days=3&aqi=no&alerts=no";
-
     /**
      * File for saving output data.
      */
     public static final String REPORT_FILE = "report.txt";
     private final WeatherService weatherService = new WeatherServiceImpl();
+    private final TownWeatherService townWeatherService = new TownWeatherServiceImpl();
+    private final LocationService locationService = new LocationServiseImpl();
+    private final CurrentWeatherService currentWeatherService = new CurrentWeatherServiceImpl();
+
 
     /**
      * Overriding a method from the HttpServlet class.
@@ -52,22 +63,38 @@ public class WeatherServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        WeatherDto weatherData = weatherService.getWetherData(MOSCOW);
+
+        String parameter = request.getParameter("t");
+
+        String apiUrl = getApiUrl(parameter);
+        WeatherDto weatherData = weatherService.getWetherData(apiUrl);
+
+        TownWeatherDto townWeather = townWeatherService.getTownWeatherData(apiUrl);
+        LocationDto location = weatherService.getWetherData(apiUrl).getLocation();
+        CurrentDto current = weatherService.getWetherData(apiUrl).getCurrent();
+
+        townWeatherService.save(townWeather);
+        locationService.save(location);
+        currentWeatherService.save(current, location);
 
         Formater formater = new Formater(weatherData);
 
         PrintWriter out = response.getWriter();
         out.write(formater.formatAllOutput());
 
-//        PrintWriter writer = new PrintWriter(REPORT_FILE);
-//        writer.write(formater.formatAllOutput());
-//        writer.close();
+        PrintWriter writer = new PrintWriter(REPORT_FILE);
+        writer.write(formater.formatAllOutput());
+        writer.close();
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/first_view.jsp");
-        requestDispatcher.forward(request, response);
+//        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/view.jsp");
+//        requestDispatcher.forward(request, response);
+//
+
+
 
 //        File f = new File(REPORT_FILE);
 //        Desktop desktop = Desktop.getDesktop();
 //        desktop.open(f);
+        request.getRequestDispatcher("/view.jsp").forward(request, response);
     }
 }

@@ -8,13 +8,13 @@ import org.sasha.dto.WeatherDto.WeatherDto;
 import org.sasha.utils.Request;
 
 public class WeatherDao {
-    public WeatherDto getWeatherData(String weatherApiUrl) {
-        String dataFromApi = getDataFromExternalApi(weatherApiUrl);
+    public WeatherDto getWeatherData(String apiUrl) {
+        String dataFromApi = getDataFromExternalApi(apiUrl);
         return parseDataFromApi(dataFromApi);
     }
 
-    private String getDataFromExternalApi(String weatherApiUrl) {
-        return Request.get(weatherApiUrl).getBody();
+    private String getDataFromExternalApi(String apiUrl) {
+        return Request.doGet(apiUrl).getBody();
     }
 
     private WeatherDto parseDataFromApi(String dataFromApi) {

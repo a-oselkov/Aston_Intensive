@@ -1,7 +1,5 @@
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.sasha.utils.Request;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,9 +7,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.sasha.controller.WeatherServlet.MOSCOW;
 
 class AppTest {
 
@@ -34,16 +29,16 @@ class AppTest {
     }
 
 
-    @Test
-    public void testRequest() {
-        String dataFromApi;
-
-        dataFromApi = Request.get(MOSCOW).getBody();
-
-        assertThat(dataFromApi).contains("region");
-        assertThat(dataFromApi).contains("temp_c");
-        assertThat(dataFromApi).contains("forecast");
-    }
+//    @Test
+//    public void testRequest() {
+//        String dataFromApi;
+//
+//        dataFromApi = Request.get(MOSCOW).getBody();
+//
+//        assertThat(dataFromApi).contains("region");
+//        assertThat(dataFromApi).contains("temp_c");
+//        assertThat(dataFromApi).contains("forecast");
+//    }
 
 //    @Test
 //    public void testParseRegionInfo() {
