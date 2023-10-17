@@ -1,5 +1,6 @@
 package org.sasha.dto.WeatherDto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
