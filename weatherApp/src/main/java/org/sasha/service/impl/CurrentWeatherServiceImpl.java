@@ -1,18 +1,21 @@
 package org.sasha.service.impl;
 
+import org.sasha.Model.Location;
 import org.sasha.dao.CurrentWeatherDao;
 import org.sasha.dao.WeatherDao;
 import org.sasha.dto.WeatherDto.CurrentDto;
+import org.sasha.dto.WeatherDto.LocationDto;
 import org.sasha.dto.WeatherDto.WeatherDto;
 import org.sasha.service.CurrentWeatherService;
 
 public class CurrentWeatherServiceImpl implements CurrentWeatherService {
-//    private final CurrentWeatherDao currentWeatherDao = new CurrentWeatherDao();
-//    @Override
-//    public void save(CurrentDto dto) {
-//        currentWeatherDao.save(dto);
-//    }
-//
+    private final CurrentWeatherDao currentWeatherDao = new CurrentWeatherDao();
+
+    @Override
+    public void save(CurrentDto dto, LocationDto location) {
+        currentWeatherDao.save(dto, location);
+    }
+
 //    @Override
 //    public CurrentDto getCurrentWeatherData(String weatherApiUrl) {
 //        WeatherDao weatherDao = new WeatherDao();

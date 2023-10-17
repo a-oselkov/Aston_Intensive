@@ -6,6 +6,7 @@ import org.sasha.Model.Location;
 import org.sasha.Model.TownWeather;
 import org.sasha.config.DBConfig;
 import org.sasha.dto.WeatherDto.CurrentDto;
+import org.sasha.dto.WeatherDto.LocationDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,22 +16,22 @@ import java.sql.SQLException;
 //@AllArgsConstructor
 //@NoArgsConstructor
 public class CurrentWeatherDao {
-//    private Location location;
-//    public void save(CurrentDto dto) {
-//        String sql = "INSERT INTO town_weather (location_id, temp, feels_like, cloud) VALUES (?, ?, ?, ?)";
-//        try (
-//                Connection connection = DBConfig.getConnection();
-//                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//
-//            preparedStatement.setLong(1, location.getId());
-//            preparedStatement.setString(2, dto.getTemp_c());
-//            preparedStatement.setString(3, dto.getFeelslike_c());
-//            preparedStatement.setString(4, dto.getCloud());
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public void save(CurrentDto dto, LocationDto location) {
+        String sql = "INSERT INTO current_weather (location_id, temp, feels_like, cloud) " +
+                "SELECT location.id, ?, ?, ? FROM location WHERE region = ?";
+        try (
+                Connection connection = DBConfig.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            
+            preparedStatement.setString(1, dto.getTemp_c());
+            preparedStatement.setString(2, dto.getFeelslike_c());
+            preparedStatement.setString(3, dto.getCloud());
+            preparedStatement.setString(4, location.getRegion());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 //    public Optional<TownWeather> findById(Long id) {
 //        String sql = "SELECT * FROM town_weather WHERE id = ?";
