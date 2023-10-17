@@ -1,9 +1,15 @@
 package org.sasha.controller;
 
+import org.sasha.Model.Location;
 import org.sasha.Model.TownWeather;
 import org.sasha.dto.TownWeatherDto;
+import org.sasha.dto.WeatherDto.LocationDto;
+import org.sasha.service.LocationService;
 import org.sasha.service.TownWeatherService;
+import org.sasha.service.WeatherService;
+import org.sasha.service.impl.LocationServiseImpl;
 import org.sasha.service.impl.TownWeatherServiceImpl;
+import org.sasha.service.impl.WeatherServiceImpl;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +26,8 @@ import static org.sasha.controller.WeatherServlet.MOSCOW;
 public class TownWeatherServlet extends HttpServlet {
 
     private final TownWeatherService townWeatherService = new TownWeatherServiceImpl();
+    private final WeatherService weatherService = new WeatherServiceImpl();
+    private final LocationService locationService = new LocationServiseImpl();
 
     public final String PETERBURG =
             "http://api.weatherapi.com/v1/forecast.json?key=cab6006614334d85a8f181853231310&q=peterburg&days=3&aqi=no&alerts=no";
@@ -50,7 +58,10 @@ public class TownWeatherServlet extends HttpServlet {
         List<TownWeather> townsW;
         for (String town : towns) {
             TownWeatherDto townWeather = townWeatherService.getTownWeatherData(town);
+            LocationDto location = weatherService.getWetherData(town).getLocation();
+
             townWeatherService.save(townWeather);
+            locationService.save(location);
         }
 
         try {
