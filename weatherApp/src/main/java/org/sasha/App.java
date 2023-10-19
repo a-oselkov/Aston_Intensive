@@ -4,6 +4,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.sasha.config.DBConfig;
+import org.sasha.controller.LoginServlet;
 import org.sasha.controller.MinMaxTempServlet;
 import org.sasha.controller.WeatherServlet;
 
@@ -54,7 +55,7 @@ public class App {
     public static Tomcat getApp(int port) {
         Tomcat app = new Tomcat();
 
-        app.setBaseDir(System.getProperty("java.io.tmpdir"));
+        app.setBaseDir(System.getProperty("java.org.tmpdir"));
         app.setPort(port);
 
         //Context ctx = app.addContext("", new File(".").getAbsolutePath());
@@ -65,6 +66,9 @@ public class App {
 
         Tomcat.addServlet(ctx, MinMaxTempServlet.class.getSimpleName(), new MinMaxTempServlet());
         ctx.addServletMappingDecoded("/t", MinMaxTempServlet.class.getSimpleName());
+
+        Tomcat.addServlet(ctx, LoginServlet.class.getSimpleName(), new LoginServlet());
+        ctx.addServletMappingDecoded("/login", LoginServlet.class.getSimpleName());
 
         return app;
     }

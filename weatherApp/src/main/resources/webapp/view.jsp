@@ -6,6 +6,11 @@
         <title>JSP Example</title>
     </head>
     <body>
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+        <ul>
+            <h1>${w.getLocation()}</h1>
+
+            <p>Name: ${name}></p>
+        </ul>
     </body>
 </html>

@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +49,6 @@ public class WeatherServlet extends HttpServlet {
     private final LocationService locationService = new LocationServiseImpl();
     private final CurrentWeatherService currentWeatherService = new CurrentWeatherServiceImpl();
 
-
     /**
      * Overriding a method from the HttpServlet class.
      *
@@ -63,8 +63,8 @@ public class WeatherServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-
-        String parameter = request.getParameter("t");
+        HttpSession session = request.getSession();
+        String parameter = request.getParameter("town");
 
         String apiUrl = getApiUrl(parameter);
         WeatherDto weatherData = weatherService.getWetherData(apiUrl);
@@ -95,6 +95,10 @@ public class WeatherServlet extends HttpServlet {
 //        File f = new File(REPORT_FILE);
 //        Desktop desktop = Desktop.getDesktop();
 //        desktop.open(f);
-        request.getRequestDispatcher("/view.jsp").forward(request, response);
+//        String t = "eete";
+//        session.setAttribute("w", weatherData);
+//        request.getRequestDispatcher("/index.html").forward(request, response);
+
+
     }
 }

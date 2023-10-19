@@ -2,11 +2,14 @@ package org.sasha.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class Location {
+@NoArgsConstructor
+public class User {
     private Long id;
     private String region;
-    private String country;
+    private String email;
+    private String pass;
 }

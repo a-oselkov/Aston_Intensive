@@ -13,7 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
+
+import static org.sasha.controller.LoginServlet.ID;
 
 
 //@AllArgsConstructor
@@ -23,20 +26,42 @@ public class CurrentWeatherDao {
 
         String sql = "INSERT INTO current_weather (location_id, temp, feels_like, cloud) " +
                 "SELECT location.id, ?, ?, ? FROM location WHERE region = ?";
+
+        long checkId = 0;
+
         if (findByRegion(location.getRegion()).isEmpty()) {
             try (
                     Connection connection = DBConfig.getConnection();
-                    PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    PreparedStatement preparedStatement =
+                            connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 //preparedStatement.setLong(1, 1);
                 preparedStatement.setString(1, dto.getTemp_c());
                 preparedStatement.setString(2, dto.getFeelslike_c());
                 preparedStatement.setString(3, dto.getCloud());
                 preparedStatement.setString(4, location.getRegion());
                 preparedStatement.executeUpdate();
+
+                var generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    checkId = generatedKeys.getLong(1);
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        sql = "INSERT INTO user_check (user_id, check_id) VALUES (?, ?)";
+
+        try (
+                Connection connection = DBConfig.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, ID);
+            preparedStatement.setLong(2, checkId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public Optional<CurrentWeather> findByRegion(String regionName) {
