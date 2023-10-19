@@ -3,8 +3,10 @@ package org.sasha.service.impl;
 import org.sasha.Model.User;
 import org.sasha.dao.CurrentWeatherDao;
 import org.sasha.dao.UserDao;
+import org.sasha.dto.UserDto;
 import org.sasha.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
@@ -18,5 +20,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<String> findLastCheck(Long id) {
         return userDao.findLastCheck(id);
+    }
+
+    @Override
+    public void save(UserDto dto) {
+        userDao.save(dto);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userDao.findAll();
     }
 }

@@ -29,7 +29,7 @@ public class CurrentWeatherDao {
 
         long checkId = 0;
 
-        if (findByRegion(location.getRegion()).isEmpty()) {
+        //if (findByRegion(location.getRegion()).isEmpty()) {
             try (
                     Connection connection = DBConfig.getConnection();
                     PreparedStatement preparedStatement =
@@ -48,7 +48,7 @@ public class CurrentWeatherDao {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }
+        //}
 
         sql = "INSERT INTO user_check (user_id, check_id) VALUES (?, ?)";
 

@@ -21,20 +21,21 @@ CREATE TABLE location (
 CREATE TABLE current_weather (
 	id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	location_id bigint REFERENCES location (id) ON DELETE CASCADE,
-	temp varchar(10),
-	feels_like varchar(10),
-	cloud varchar(10)
+	temp varchar(100),
+	feels_like varchar(100),
+	cloud varchar(100)
 );
 
 CREATE TABLE users (
 	id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	name varchar(100),
 	region varchar(100),
 	email varchar(100),
-	pass varchar(10)
+	pass varchar(100)
 );
 
-INSERT INTO users (region, email, pass) VALUES ('moscow', 'mail', '123');
-INSERT INTO users (region, email, pass) VALUES ('pskov', 'mail', '123');
+INSERT INTO users (name, region, email, pass) VALUES ('Ivan', 'moscow', 'mail@mail', '123');
+INSERT INTO users (name, region, email, pass) VALUES ('Petr', 'pskov', 'ya@ya', '123');
 
 CREATE TABLE user_check (
 	user_id bigint,

@@ -7,6 +7,7 @@ import org.sasha.config.DBConfig;
 import org.sasha.controller.LoginServlet;
 import org.sasha.controller.MinMaxTempServlet;
 import org.sasha.controller.WeatherServlet;
+import org.sasha.controller.UsersServlet;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,14 +62,18 @@ public class App {
         //Context ctx = app.addContext("", new File(".").getAbsolutePath());
         Context ctx = app.addWebapp("", new File("src/main/resources/webapp").getAbsolutePath());
 
-        Tomcat.addServlet(ctx, WeatherServlet.class.getSimpleName(), new WeatherServlet());
+        app.addServlet(ctx, WeatherServlet.class.getSimpleName(), new WeatherServlet());
         ctx.addServletMappingDecoded("", WeatherServlet.class.getSimpleName());
 
-        Tomcat.addServlet(ctx, MinMaxTempServlet.class.getSimpleName(), new MinMaxTempServlet());
+        app.addServlet(ctx, MinMaxTempServlet.class.getSimpleName(), new MinMaxTempServlet());
         ctx.addServletMappingDecoded("/t", MinMaxTempServlet.class.getSimpleName());
 
-        Tomcat.addServlet(ctx, LoginServlet.class.getSimpleName(), new LoginServlet());
+        app.addServlet(ctx, LoginServlet.class.getSimpleName(), new LoginServlet());
         ctx.addServletMappingDecoded("/login", LoginServlet.class.getSimpleName());
+        ctx.addServletMappingDecoded("/logout", LoginServlet.class.getSimpleName());
+
+        app.addServlet(ctx, UsersServlet.class.getSimpleName(), new UsersServlet());
+        ctx.addServletMappingDecoded("/users/*", UsersServlet.class.getSimpleName());
 
         return app;
     }
