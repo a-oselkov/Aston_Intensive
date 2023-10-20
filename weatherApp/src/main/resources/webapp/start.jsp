@@ -12,7 +12,7 @@
         <div class="card-body">
             <form action="">
                 <label>Введите город</label>
-                <input class="form-control" type="text" name="town">
+                <input class="form-control" type="text" name="town" required>
                 <br>
                 <button class="btn btn-primary" type="submit">Проверить погоду</button>
             </form>
