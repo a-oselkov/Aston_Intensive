@@ -1,12 +1,13 @@
 package org.sasha.service.impl;
 
-import org.sasha.Model.Location;
+import org.sasha.Model.CurrentWeather;
 import org.sasha.dao.CurrentWeatherDao;
-import org.sasha.dao.WeatherDao;
 import org.sasha.dto.WeatherDto.CurrentDto;
 import org.sasha.dto.WeatherDto.LocationDto;
-import org.sasha.dto.WeatherDto.WeatherDto;
 import org.sasha.service.CurrentWeatherService;
+
+import java.util.List;
+import java.util.Optional;
 
 public class CurrentWeatherServiceImpl implements CurrentWeatherService {
     private final CurrentWeatherDao currentWeatherDao = new CurrentWeatherDao();
@@ -14,6 +15,16 @@ public class CurrentWeatherServiceImpl implements CurrentWeatherService {
     @Override
     public void save(CurrentDto dto, LocationDto location) {
         currentWeatherDao.save(dto, location);
+    }
+
+    @Override
+    public List<CurrentWeather> findAll() {
+        return currentWeatherDao.findAll();
+    }
+
+    @Override
+    public Optional<CurrentWeather> findByRegion(String regionName) {
+        return currentWeatherDao.findByRegion(regionName);
     }
 
 //    @Override

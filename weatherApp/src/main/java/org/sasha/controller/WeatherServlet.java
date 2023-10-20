@@ -38,6 +38,14 @@ public class WeatherServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String parameter = request.getParameter("town");
 
+        if (parameter == null || parameter.isEmpty()) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/start.jsp");
+            session.setAttribute("flash", "Введите город для проверки погоды");
+            response.setStatus(422);
+            requestDispatcher.forward(request, response);
+            return;
+        }
+
         String apiUrl = getApiUrl(parameter);
         WeatherDto weatherData = weatherService.getWetherData(apiUrl);
 

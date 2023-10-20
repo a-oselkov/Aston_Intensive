@@ -13,7 +13,7 @@
         <c:forEach var="user" items="${users}">
             <tr>
                 <td>${user.getId()}</td>
-                <td>${user.getName()}</td>
+                <td><a href='/users/show?id=${user.getId()}'>${user.getName()}</a></td>
                 <td>${user.getRegion()}</td>
             </tr>
         </c:forEach>

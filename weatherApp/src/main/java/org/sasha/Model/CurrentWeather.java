@@ -8,8 +8,8 @@ import lombok.Data;
 public class CurrentWeather {
     private Long id;
     private String temp_c;
-    private String feelslike_c;
+    private String feelsLike_c;
     private String cloud;
 
-    private Long location_id;
+    private Long locationId;
 }

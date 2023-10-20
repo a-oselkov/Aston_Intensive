@@ -5,7 +5,6 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.sasha.config.DBConfig;
 import org.sasha.controller.LoginServlet;
-import org.sasha.controller.MinMaxTempServlet;
 import org.sasha.controller.WeatherServlet;
 import org.sasha.controller.UsersServlet;
 
@@ -64,9 +63,6 @@ public class App {
 
         app.addServlet(ctx, WeatherServlet.class.getSimpleName(), new WeatherServlet());
         ctx.addServletMappingDecoded("", WeatherServlet.class.getSimpleName());
-
-        app.addServlet(ctx, MinMaxTempServlet.class.getSimpleName(), new MinMaxTempServlet());
-        ctx.addServletMappingDecoded("/t", MinMaxTempServlet.class.getSimpleName());
 
         app.addServlet(ctx, LoginServlet.class.getSimpleName(), new LoginServlet());
         ctx.addServletMappingDecoded("/login", LoginServlet.class.getSimpleName());

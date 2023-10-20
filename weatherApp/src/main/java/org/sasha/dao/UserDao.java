@@ -1,5 +1,6 @@
 package org.sasha.dao;
 
+import org.sasha.Model.CurrentWeather;
 import org.sasha.Model.Location;
 import org.sasha.Model.TownWeather;
 import org.sasha.Model.User;
@@ -90,6 +91,65 @@ public class UserDao {
                 result.add(user);
             }
             return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<CurrentWeather> findAllCheckById(Long id) {
+        String sql = "SELECT * FROM current_weather WHERE id IN " +
+                "(SELECT check_id FROM user_check WHERE user_id = ?)";
+        try (Connection connection = DBConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<CurrentWeather> result = new ArrayList<>();
+            while (resultSet.next()) {
+                Long checkId = resultSet.getLong("id");
+                String temp = resultSet.getString("temp");
+                String feelsLike = resultSet.getString("feels_like");
+                String cloud = resultSet.getString("cloud");
+                Long locId = resultSet.getLong("location_id");
+
+                CurrentWeather currentWeather= new CurrentWeather(checkId, temp, feelsLike, cloud, locId);
+                result.add(currentWeather);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Optional<User> findById(Long id) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection connection = DBConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String region = resultSet.getString("region");
+                String email = resultSet.getString("email");
+                String pass = resultSet.getString("pass");
+
+                User user = new User(id, name, region, email, pass);
+                return Optional.of(user);
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection connection = DBConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            if (findById(id).isPresent()) {
+                preparedStatement.setLong(1, id);
+                preparedStatement.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,10 +1,6 @@
 package org.sasha.dao;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.sasha.Model.CurrentWeather;
-import org.sasha.Model.Location;
-import org.sasha.Model.TownWeather;
 import org.sasha.config.DBConfig;
 import org.sasha.dto.WeatherDto.CurrentDto;
 import org.sasha.dto.WeatherDto.LocationDto;
@@ -14,14 +10,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.sasha.controller.LoginServlet.ID;
 
-
-//@AllArgsConstructor
-//@NoArgsConstructor
 public class CurrentWeatherDao {
+    UserCheckDao userCheckDao = new UserCheckDao();
+
     public void save(CurrentDto dto, LocationDto location) {
 
         String sql = "INSERT INTO current_weather (location_id, temp, feels_like, cloud) " +
@@ -49,19 +46,7 @@ public class CurrentWeatherDao {
                 throw new RuntimeException(e);
             }
         //}
-
-        sql = "INSERT INTO user_check (user_id, check_id) VALUES (?, ?)";
-
-        try (
-                Connection connection = DBConfig.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, ID);
-            preparedStatement.setLong(2, checkId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        userCheckDao.save(ID, checkId);
     }
 
     public Optional<CurrentWeather> findByRegion(String regionName) {
@@ -87,27 +72,27 @@ public class CurrentWeatherDao {
             throw new RuntimeException(e);
         }
     }
-//
-//    public List<TownWeather> findAll() {
-//        String sql = "SELECT * FROM town_weather";
-//        try (Connection connection = DBConfig.getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            List<TownWeather> result = new ArrayList<>();
-//            while (resultSet.next()) {
-//                Long id = resultSet.getLong("id");
-//                String name = resultSet.getString("name");
-//                String temp = resultSet.getString("temp");
-//                String feelsLike = resultSet.getString("feels_like");
-//                String cloud = resultSet.getString("cloud");
-//                TownWeather townWeather = new TownWeather(id, name, temp, feelsLike, cloud);
-//                result.add(townWeather);
-//            }
-//            return result;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+
+    public List<CurrentWeather> findAll() {
+        String sql = "SELECT * FROM current_weather";
+        try (Connection connection = DBConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<CurrentWeather> result = new ArrayList<>();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String temp = resultSet.getString("temp");
+                String feelsLike = resultSet.getString("feels_like");
+                String cloud = resultSet.getString("cloud");
+                Long locId = resultSet.getLong("location_id");
+                CurrentWeather currentWeather= new CurrentWeather(id, temp, feelsLike, cloud, locId);
+                result.add(currentWeather);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 //
 //    public void deleteById(Long id) {
 //

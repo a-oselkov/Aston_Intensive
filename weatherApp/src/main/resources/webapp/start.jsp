@@ -10,7 +10,7 @@
     <br>
     <div class="card">
         <div class="card-body">
-            <form action="/" method="get">
+            <form action="">
                 <label>Введите город</label>
                 <input class="form-control" type="text" name="town">
                 <br>

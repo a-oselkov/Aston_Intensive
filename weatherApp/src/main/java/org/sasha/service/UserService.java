@@ -1,5 +1,6 @@
 package org.sasha.service;
 
+import org.sasha.Model.CurrentWeather;
 import org.sasha.Model.User;
 import org.sasha.dto.UserDto;
 
@@ -11,4 +12,7 @@ public interface UserService {
     Optional<String> findLastCheck(Long id);
     void save(UserDto dto);
     public List<User> findAll();
+    Optional<User> findById(Long id);
+    public void deleteById(Long id);
+    List<CurrentWeather> findAllCheckById(Long id);
 }

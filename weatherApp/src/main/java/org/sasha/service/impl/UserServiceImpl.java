@@ -1,5 +1,6 @@
 package org.sasha.service.impl;
 
+import org.sasha.Model.CurrentWeather;
 import org.sasha.Model.User;
 import org.sasha.dao.CurrentWeatherDao;
 import org.sasha.dao.UserDao;
@@ -30,5 +31,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userDao.findAll();
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userDao.findById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        userDao.deleteById(id);
+    }
+
+    @Override
+    public List<CurrentWeather> findAllCheckById(Long id) {
+        return userDao.findAllCheckById(id);
     }
 }

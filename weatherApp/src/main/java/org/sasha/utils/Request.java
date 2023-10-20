@@ -27,7 +27,7 @@ public final class Request {
     }
 
     public static String getApiUrl(String town) {
-        if (town == null) {
+        if (town == null || town.isEmpty()) {
             town = NOVGOROD;
         }
         return PREF + KEY + LOC_PART + town + SUF;
