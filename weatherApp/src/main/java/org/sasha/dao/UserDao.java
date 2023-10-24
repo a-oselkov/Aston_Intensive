@@ -1,11 +1,8 @@
 package org.sasha.dao;
 
-import org.sasha.Model.CurrentWeather;
-import org.sasha.Model.Location;
-import org.sasha.Model.TownWeather;
-import org.sasha.Model.User;
+import org.sasha.model.CurrentWeather;
+import org.sasha.model.User;
 import org.sasha.config.DBConfig;
-import org.sasha.dto.TownWeatherDto;
 import org.sasha.dto.UserDto;
 
 import java.sql.Connection;
@@ -15,8 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.sasha.controller.LoginServlet.ID;
 
 public class UserDao {
 

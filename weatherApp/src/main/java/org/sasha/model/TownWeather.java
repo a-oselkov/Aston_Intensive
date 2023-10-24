@@ -1,11 +1,7 @@
-package org.sasha.Model;
+package org.sasha.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor

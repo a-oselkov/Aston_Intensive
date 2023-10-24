@@ -1,8 +1,7 @@
 package org.sasha.service.impl;
 
-import org.sasha.Model.CurrentWeather;
-import org.sasha.Model.User;
-import org.sasha.dao.CurrentWeatherDao;
+import org.sasha.model.CurrentWeather;
+import org.sasha.model.User;
 import org.sasha.dao.UserDao;
 import org.sasha.dto.UserDto;
 import org.sasha.service.UserService;

@@ -1,15 +1,8 @@
 package org.sasha.controller;
 
-import org.sasha.Model.User;
-import org.sasha.dto.TownWeatherDto;
-import org.sasha.dto.WeatherDto.CurrentDto;
-import org.sasha.dto.WeatherDto.LocationDto;
-import org.sasha.dto.WeatherDto.WeatherDto;
-import org.sasha.service.CurrentWeatherService;
+import org.sasha.model.User;
 import org.sasha.service.UserService;
-import org.sasha.service.impl.CurrentWeatherServiceImpl;
 import org.sasha.service.impl.UserServiceImpl;
-import org.sasha.utils.Formater;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,11 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
 import java.util.Optional;
-
-import static org.sasha.utils.Request.getApiUrl;
 
 public class LoginServlet extends HttpServlet {
     public static long ID;

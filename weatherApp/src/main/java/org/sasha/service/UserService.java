@@ -1,7 +1,7 @@
 package org.sasha.service;
 
-import org.sasha.Model.CurrentWeather;
-import org.sasha.Model.User;
+import org.sasha.model.CurrentWeather;
+import org.sasha.model.User;
 import org.sasha.dto.UserDto;
 
 import java.util.List;

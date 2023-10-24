@@ -1,6 +1,6 @@
 package org.sasha.dao;
 
-import org.sasha.Model.CurrentWeather;
+import org.sasha.model.CurrentWeather;
 import org.sasha.config.DBConfig;
 import org.sasha.dto.WeatherDto.CurrentDto;
 import org.sasha.dto.WeatherDto.LocationDto;

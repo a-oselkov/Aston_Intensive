@@ -1,6 +1,6 @@
 package org.sasha.dao;
 
-import org.sasha.Model.TownWeather;
+import org.sasha.model.TownWeather;
 import org.sasha.config.DBConfig;
 import org.sasha.dto.TownWeatherDto;
 
@@ -9,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,9 +1,8 @@
 package org.sasha.service.impl;
 
-import org.sasha.Model.Location;
+import org.sasha.model.Location;
 import org.sasha.dao.LocationDao;
 import org.sasha.dao.WeatherDao;
-import org.sasha.dto.TownWeatherDto;
 import org.sasha.dto.WeatherDto.LocationDto;
 import org.sasha.dto.WeatherDto.WeatherDto;
 import org.sasha.service.LocationService;

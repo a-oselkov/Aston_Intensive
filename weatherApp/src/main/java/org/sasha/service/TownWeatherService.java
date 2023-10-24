@@ -1,6 +1,6 @@
 package org.sasha.service;
 
-import org.sasha.Model.TownWeather;
+import org.sasha.model.TownWeather;
 import org.sasha.dto.TownWeatherDto;
 
 import java.sql.SQLException;

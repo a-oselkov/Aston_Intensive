@@ -1,6 +1,6 @@
 package org.sasha.service.impl;
 
-import org.sasha.Model.TownWeather;
+import org.sasha.model.TownWeather;
 import org.sasha.dao.TownWeatherDao;
 import org.sasha.dao.WeatherDao;
 import org.sasha.dto.TownWeatherDto;

@@ -1,7 +1,6 @@
 package org.sasha.service;
 
-import org.sasha.Model.CurrentWeather;
-import org.sasha.dto.TownWeatherDto;
+import org.sasha.model.CurrentWeather;
 import org.sasha.dto.WeatherDto.CurrentDto;
 import org.sasha.dto.WeatherDto.LocationDto;
 

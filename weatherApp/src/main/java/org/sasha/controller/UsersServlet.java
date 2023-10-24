@@ -1,8 +1,8 @@
 package org.sasha.controller;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.sasha.Model.CurrentWeather;
-import org.sasha.Model.User;
+import org.sasha.model.CurrentWeather;
+import org.sasha.model.User;
 import org.sasha.dto.UserDto;
 import org.sasha.service.UserService;
 import org.sasha.service.impl.UserServiceImpl;
@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class UsersServlet extends HttpServlet {
 
     private final UserService userService = new UserServiceImpl();
+
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response)
@@ -133,7 +133,7 @@ public class UsersServlet extends HttpServlet {
     }
 
     private void deleteUser(HttpServletRequest request,
-                             HttpServletResponse response)
+                            HttpServletResponse response)
             throws IOException, ServletException {
 
         HttpSession session = request.getSession();

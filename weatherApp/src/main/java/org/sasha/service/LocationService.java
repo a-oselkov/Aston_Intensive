@@ -1,8 +1,6 @@
 package org.sasha.service;
 
-import org.sasha.Model.Location;
-import org.sasha.Model.TownWeather;
-import org.sasha.dto.TownWeatherDto;
+import org.sasha.model.Location;
 import org.sasha.dto.WeatherDto.LocationDto;
 
 import java.util.List;

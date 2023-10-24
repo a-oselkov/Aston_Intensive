@@ -1,4 +1,4 @@
-package org.sasha.Model;
+package org.sasha.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
