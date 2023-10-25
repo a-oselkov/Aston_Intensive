@@ -3,24 +3,18 @@ package org.sasha;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.sasha.model.Book;
-import org.sasha.config.DBConfig;
+import org.sasha.dao.UserDao;
+import org.sasha.dto.UserDto;
 import org.sasha.controller.LoginServlet;
 import org.sasha.controller.WeatherServlet;
 import org.sasha.controller.UsersServlet;
-import org.sasha.utils.HibernateUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
 
 /**
  * Configuring and launching the application
@@ -86,45 +80,18 @@ public class App {
 
     public static void main(String[] args) throws LifecycleException, IOException, SQLException {
 
-        Connection connection = DBConfig.getConnection();
-        Statement statement = connection.createStatement();
-        String initSql = getFileContent("src/main/resources/init.sql");
-
-        statement.execute(initSql);
+//        Connection connection = DBConfig.getConnection();
+//        Statement statement = connection.createStatement();
+//        String initSql = getFileContent("src/main/resources/init.sql");
+//
+//        statement.execute(initSql);
 
         Tomcat app = getApp(getPort());
         app.start();
 
-
-        Book book = new Book("Core Java", "Learn Core Java with Coding Examples");
-        Book book1 = new Book("Learn Hibernate", "Learn Hibernate with building projects");
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // start a transaction
-            transaction = session.beginTransaction();
-            // save the book objects
-            session.persist(book);
-            session.persist(book1);
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List<Book> books = session.createQuery("from Book", Book.class).list();
-            books.forEach(b -> {
-                System.out.println("Print book name : " + b.getName());
-            });
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
+        UserDao userDao = new UserDao();
+        UserDto user = new UserDto("Ivan", "Novgorod", "1@1", "pass");
+        userDao.save(user);
 
         app.getServer().await();
     }

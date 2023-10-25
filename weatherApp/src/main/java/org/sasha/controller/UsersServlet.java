@@ -89,10 +89,10 @@ public class UsersServlet extends HttpServlet {
         Long id = Long.valueOf(getId(request));
 
         User user = userService.findById(id).get();
-        List<CurrentWeather> checks = userService.findAllCheckById(id);
+        //List<CurrentWeather> checks = userService.findAllCheckById(id);
 
         request.setAttribute("user", user);
-        request.setAttribute("checks", checks);
+        //request.setAttribute("checks", checks);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/show.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -126,7 +126,6 @@ public class UsersServlet extends HttpServlet {
             requestDispatcher.forward(request, response);
             return;
         }
-
         userService.save(dto);
         session.setAttribute("flash", "Пользователь успешно создан");
         response.sendRedirect("/users");
@@ -139,10 +138,9 @@ public class UsersServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         Long id = Long.valueOf(getId(request));
-
-        User user = userService.findById(id).get();
-
         userService.deleteById(id);
+        //User user = userService.findById(id).get();
+        //request.setAttribute("user", user);
         session.setAttribute("flash", "Пользователь успешно удален");
         response.sendRedirect("/users");
     }

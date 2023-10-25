@@ -16,11 +16,11 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
     }
-
-    @Override
-    public Optional<String> findLastCheck(Long id) {
-        return userDao.findLastCheck(id);
-    }
+//
+//    @Override
+//    public Optional<String> findLastCheck(Long id) {
+//        return userDao.findLastCheck(id);
+//    }
 
     @Override
     public void save(UserDto dto) {
@@ -41,9 +41,9 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long id) {
         userDao.deleteById(id);
     }
-
-    @Override
-    public List<CurrentWeather> findAllCheckById(Long id) {
-        return userDao.findAllCheckById(id);
-    }
+//
+//    @Override
+//    public List<CurrentWeather> findAllCheckById(Long id) {
+//        return userDao.findAllCheckById(id);
+//    }
 }

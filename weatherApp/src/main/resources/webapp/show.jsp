@@ -14,7 +14,7 @@
             <form action='/users/edit?id=${user.getId()}' method="get" style="display: inline >
                                 <button type="submit" class="btn btn-primary">Редактировать</button>
             </form>
-            <form action='/users/delete?id=${user.getId()}' method="post" style="display: inline>
+            <form action='/users/delete?id=${user.getId()}' method="post" style="display: inline">
                     <button type="submit" class="btn btn-danger">Удалить</button>
             </form>
         </div>

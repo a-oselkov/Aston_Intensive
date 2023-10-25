@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface UserService {
     Optional<User> findByEmail(String email);
-    Optional<String> findLastCheck(Long id);
+//    Optional<String> findLastCheck(Long id);
     void save(UserDto dto);
     public List<User> findAll();
     Optional<User> findById(Long id);
     public void deleteById(Long id);
-    List<CurrentWeather> findAllCheckById(Long id);
+//    List<CurrentWeather> findAllCheckById(Long id);
 }

@@ -32,6 +32,8 @@
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
 
         <mapping class="org.sasha.model.Book" />
+        <mapping class="org.sasha.model.Location" />
+        <mapping class="org.sasha.model.User" />
 
     </session-factory>
 

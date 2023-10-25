@@ -57,7 +57,8 @@ public class LoginServlet extends HttpServlet {
             user = userService.findByEmail(email).get();
             ID = user.getId();
             if (user.getPass().equals(password)) {
-                String region = userService.findLastCheck(user.getId()).orElse(user.getRegion());
+                String region = "tver";
+                        //userService.findLastCheck(user.getId()).orElse(user.getRegion());
 
                 session.setAttribute("userId", user.getId());
                 session.setAttribute("flash", "Вы успешно вошли");

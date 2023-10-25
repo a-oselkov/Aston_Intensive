@@ -12,5 +12,6 @@ public interface LocationService {
     List<Location> findAll();
     void deleteById(Long id);
     void deleteAll();
+    Optional<Location> findByRegion(String region);
     LocationDto getLocationData(String weatherApiUrl);
 }

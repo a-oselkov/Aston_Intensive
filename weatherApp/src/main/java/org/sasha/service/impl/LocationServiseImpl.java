@@ -39,6 +39,11 @@ public class LocationServiseImpl implements LocationService {
     }
 
     @Override
+    public Optional<Location> findByRegion(String region) {
+        return locationDao.findByRegion(region);
+    }
+
+    @Override
     public LocationDto getLocationData(String weatherApiUrl) {
         WeatherDao weatherDao = new WeatherDao();
         WeatherDto weather = weatherDao.getWeatherData(weatherApiUrl);
