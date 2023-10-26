@@ -1,7 +1,10 @@
 package org.sasha.controller;
 
+import org.sasha.model.CurrentWeatherCheck;
 import org.sasha.model.User;
+import org.sasha.service.CurrentWeatherCheckService;
 import org.sasha.service.UserService;
+import org.sasha.service.impl.CurrentWeatherCheckServiceImpl;
 import org.sasha.service.impl.UserServiceImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -14,8 +17,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class LoginServlet extends HttpServlet {
-    public static long ID;
+    public static long ID = 0;
     private final UserService userService = new UserServiceImpl();
+    private final CurrentWeatherCheckService currentWeatherCheckService = new CurrentWeatherCheckServiceImpl();
 
     @Override
     public void doGet(HttpServletRequest request,
@@ -57,8 +61,21 @@ public class LoginServlet extends HttpServlet {
             user = userService.findByEmail(email).get();
             ID = user.getId();
             if (user.getPass().equals(password)) {
-                String region = "tver";
-                        //userService.findLastCheck(user.getId()).orElse(user.getRegion());
+                String region;
+//                currentWeatherCheckService.findLastCheckByUser(user).get();
+//                if (currentWeatherCheckService.findLastCheckByUser(user).isPresent()) {
+//                    CurrentWeatherCheck check = currentWeatherCheckService.findLastCheckByUser(user)
+//                            .get();
+//                    region = check.getLocation().getRegion();
+//                } else {
+//                    region = user.getRegion();
+//                }
+                CurrentWeatherCheck check = user.getLastCheck();
+                if (check == null) {
+                    region = user.getRegion();
+                } else {
+                    region = check.getLocation().getRegion();
+                }
 
                 session.setAttribute("userId", user.getId());
                 session.setAttribute("flash", "Вы успешно вошли");

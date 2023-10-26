@@ -24,19 +24,21 @@
     <table class="table">
             <thead>
                 <th>ID</th>
-                <th>Location_id</th>
+                <th>Регион</th>
                 <th>Температура</th>
                 <th>Ощущается как</th>
                 <th>Облачность</th>
+                <th>Время проверки</th>
             </thead>
             <tbody>
             <c:forEach var="check" items="${checks}">
                 <tr>
                     <td>${check.getId()}</td>
-                    <td>${check.getLocationId()}</td>
+                    <td>${check.getLocation().getRegion()}</td>
                     <td>${check.getTemp_c()}</td>
                     <td>${check.getFeelsLike_c()}</td>
                     <td>${check.getCloud()}</td>
+                    <td>${check.getCreatedAt()}</td>
                 </tr>
             </c:forEach>
             </tbody>

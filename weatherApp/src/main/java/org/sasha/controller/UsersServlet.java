@@ -1,7 +1,6 @@
 package org.sasha.controller;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.sasha.model.CurrentWeather;
 import org.sasha.model.User;
 import org.sasha.dto.UserDto;
 import org.sasha.service.UserService;
@@ -89,10 +88,9 @@ public class UsersServlet extends HttpServlet {
         Long id = Long.valueOf(getId(request));
 
         User user = userService.findById(id).get();
-        //List<CurrentWeather> checks = userService.findAllCheckById(id);
 
         request.setAttribute("user", user);
-        //request.setAttribute("checks", checks);
+        request.setAttribute("checks", user.getChecks());
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/show.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -139,8 +137,6 @@ public class UsersServlet extends HttpServlet {
 
         Long id = Long.valueOf(getId(request));
         userService.deleteById(id);
-        //User user = userService.findById(id).get();
-        //request.setAttribute("user", user);
         session.setAttribute("flash", "Пользователь успешно удален");
         response.sendRedirect("/users");
     }

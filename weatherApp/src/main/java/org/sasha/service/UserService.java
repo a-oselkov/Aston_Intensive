@@ -1,6 +1,5 @@
 package org.sasha.service;
 
-import org.sasha.model.CurrentWeather;
 import org.sasha.model.User;
 import org.sasha.dto.UserDto;
 

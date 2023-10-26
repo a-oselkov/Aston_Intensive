@@ -4,16 +4,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.sasha.dto.UserDto;
 import org.sasha.model.Location;
 import org.sasha.config.DBConfig;
 import org.sasha.dto.WeatherDto.LocationDto;
-import org.sasha.model.User;
 import org.sasha.utils.HibernateUtil;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -56,9 +52,9 @@ public class LocationDao {
 
     public Optional<Location> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            //transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             Location location = session.get(Location.class, id);
-            //transaction.commit();
+            transaction.commit();
             return Optional.ofNullable(location);
         } catch (Exception e) {
             if (transaction != null) {
@@ -71,11 +67,11 @@ public class LocationDao {
 
     public Optional<Location> findByRegion(String region) {
         try (Session session = sessionFactory.openSession()) {
-            //transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             Query<Location> query = session.createQuery("from Location " +
                     "where region =:region", Location.class);
             query.setParameter("region", region);
-            //transaction.commit();
+            transaction.commit();
             return query.uniqueResultOptional();
         } catch (Exception e) {
             if (transaction != null) {
@@ -103,11 +99,11 @@ public class LocationDao {
     public List<Location> findAll() {
         List<Location> locations = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
-            //transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             Query<Location> query = session.createQuery("from Location",
                     Location.class);
             locations = query.getResultList();
-            //transaction.commit();
+            transaction.commit();
             return locations;
         } catch (Exception e) {
             if (transaction != null) {

@@ -1,5 +1,6 @@
 package org.sasha.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.sasha.model.Location;
 import org.sasha.dao.LocationDao;
 import org.sasha.dao.WeatherDao;
@@ -10,6 +11,7 @@ import org.sasha.service.LocationService;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class LocationServiseImpl implements LocationService {
     private final LocationDao locationDao = new LocationDao();
 
@@ -47,7 +49,6 @@ public class LocationServiseImpl implements LocationService {
     public LocationDto getLocationData(String weatherApiUrl) {
         WeatherDao weatherDao = new WeatherDao();
         WeatherDto weather = weatherDao.getWeatherData(weatherApiUrl);
-
         return weather.getLocation();
     }
 

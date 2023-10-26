@@ -1,22 +1,62 @@
 package org.sasha.dao;
 
-import org.sasha.model.CurrentWeather;
-import org.sasha.config.DBConfig;
-import org.sasha.dto.WeatherDto.CurrentDto;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.sasha.dto.CurrentWeatherCheckDto;
+import org.sasha.dto.UserDto;
 import org.sasha.dto.WeatherDto.LocationDto;
+import org.sasha.model.CurrentWeatherCheck;
+import org.sasha.model.Location;
+import org.sasha.model.User;
+import org.sasha.utils.HibernateUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-//public class CurrentWeatherDao {
-//    UserCheckDao userCheckDao = new UserCheckDao();
-//
+import static org.sasha.controller.LoginServlet.ID;
+
+public class CurrentWeatherCheckDao {
+    private final SessionFactory sessionFactory;
+    private Transaction transaction;
+    private final UserDao userDao = new UserDao();
+    private final LocationDao locationDao = new LocationDao();
+
+    public CurrentWeatherCheckDao() {
+        this.sessionFactory = HibernateUtil.getSessionFactory();
+    }
+
+    public void save(CurrentWeatherCheckDto dto) {
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            CurrentWeatherCheck check = new CurrentWeatherCheck();
+            User user = userDao.findById(dto.getUser_id()).get();
+            Location location = locationDao.findById(dto.getLocation_id()).get();
+
+            check.setTemp_c(dto.getTemp_c());
+            check.setFeelsLike_c(dto.getFeelsLike_c());
+            check.setCloud(dto.getCloud());
+            check.setUser(user);
+            check.setLocation(location);
+
+            session.persist(check);
+            transaction.commit();
+
+        }
+    }
+
+//    public Optional<CurrentWeatherCheck> findLastCheckByUser(User user) {
+//        try (Session session = sessionFactory.openSession()) {
+//            transaction = session.beginTransaction();
+//            Query<CurrentWeatherCheck> query = session.createQuery("select max(id) " +
+//                            "from CurrentWeatherCheck where fk(user.id) =:id",
+//                    CurrentWeatherCheck.class);
+//            query.setParameter("id", user.getId());
+//            transaction.commit();
+//            return query.stream().findFirst();
+//        }
+//    }
 //    public void save(CurrentDto dto, LocationDto location) {
 //
 //        String sql = "INSERT INTO current_weather (location_id, temp, feels_like, cloud) " +
@@ -117,4 +157,4 @@ import java.util.Optional;
 //            throw new RuntimeException(e);
 //        }
 //    }
-//}
+}
