@@ -80,7 +80,7 @@ public class UserDao {
     public Optional<User> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            User user = session.get(User.class, id);
+            User user = session.find(User.class, id);
             transaction.commit();
             return Optional.ofNullable(user);
         } catch (Exception e) {

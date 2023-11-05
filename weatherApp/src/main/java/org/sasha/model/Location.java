@@ -1,24 +1,35 @@
 package org.sasha.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.SessionFactory;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static jakarta.persistence.TemporalType.TIMESTAMP;
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -33,6 +44,12 @@ public class Location {
     private String country;
 
     private String locTime;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name="user_location",
+            joinColumns=  @JoinColumn(name="location_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="user_id", referencedColumnName="id") )
+    private Set<User> users = new HashSet<>();
 
 //    @CreationTimestamp
 //    @Temporal(TIMESTAMP)

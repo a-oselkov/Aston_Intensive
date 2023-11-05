@@ -52,19 +52,15 @@ public class WeatherServlet extends HttpServlet {
         String apiUrl = getApiUrl(parameter);
         WeatherDto weatherData = weatherService.getWetherData(apiUrl);
 
-
         TownWeatherDto townWeather = townWeatherService.getTownWeatherData(apiUrl);
         LocationDto locationDto = weatherService.getWetherData(apiUrl).getLocation();
         CurrentDto current = weatherService.getWetherData(apiUrl).getCurrent();
 
-
         townWeatherService.save(townWeather);
-        locationService.save(locationDto);
-
-        Location location = locationService.findByRegion(locationDto.getRegion()).get();
+        long locationId = locationService.save(locationDto);
 
         CurrentWeatherCheckDto checkDto = new CurrentWeatherCheckDto(current.getTemp_c(), current.getFeelslike_c(),
-                current.getCloud(), ID, location.getId());
+                current.getCloud(), ID, locationId);
         currentWeatherCheckService.save(checkDto);
 
         session.setAttribute("weather", weatherData);

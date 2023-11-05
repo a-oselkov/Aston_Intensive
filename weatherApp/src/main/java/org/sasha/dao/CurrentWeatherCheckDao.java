@@ -41,6 +41,11 @@ public class CurrentWeatherCheckDao {
             check.setLocation(location);
 
             session.persist(check);
+
+            location.getUsers().add(user);
+            session.merge(location);
+            session.flush();
+
             transaction.commit();
 
         }

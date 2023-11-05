@@ -25,7 +25,7 @@ public class LocationDao {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    public void save(LocationDto dto) {
+    public long save(LocationDto dto) {
         if (findByRegion(dto.getRegion()).isEmpty()) {
             try (Session session = sessionFactory.openSession()) {
                 transaction = session.beginTransaction();
@@ -38,6 +38,7 @@ public class LocationDao {
                 session.persist(location);
                 transaction.commit();
 
+                return location.getId();
             } catch (Exception e) {
                 if (transaction != null) {
                     transaction.rollback();
@@ -47,7 +48,7 @@ public class LocationDao {
         } else {
             //обновляем время
         }
-
+        return 0L;
     }
 
     public Optional<Location> findById(Long id) {

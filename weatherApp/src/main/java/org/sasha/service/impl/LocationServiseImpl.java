@@ -16,8 +16,8 @@ public class LocationServiseImpl implements LocationService {
     private final LocationDao locationDao = new LocationDao();
 
     @Override
-    public void save(LocationDto location) {
-        locationDao.save(location);
+    public long save(LocationDto location) {
+        return locationDao.save(location);
     }
 
     @Override

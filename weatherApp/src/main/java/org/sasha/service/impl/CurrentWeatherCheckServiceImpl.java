@@ -16,10 +16,10 @@ public class CurrentWeatherCheckServiceImpl implements CurrentWeatherCheckServic
         currentWeatherCheckDao.save(dto);
     }
 
-    @Override
-    public Optional<CurrentWeatherCheck> findLastCheckByUser(User user) {
-        return currentWeatherCheckDao.findLastCheckByUser(user);
-    }
+//    @Override
+//    public Optional<CurrentWeatherCheck> findLastCheckByUser(User user) {
+//        return currentWeatherCheckDao.findLastCheckByUser(user);
+//    }
 
 //    @Override
 //    public List<CurrentWeather> findAll() {
