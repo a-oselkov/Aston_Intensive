@@ -80,9 +80,8 @@ class AppTest {
     public void getAllUser() throws IOException, ServletException {
         when(request.getPathInfo()).thenReturn("show");
         usersServlet.doGet(request, response);
-        response.setStatus(200);
 
-        //verify(request, times(1)).getPathInfo();
+        verify(request, times(1)).getPathInfo();
         assertThat(response.getStatus()).isEqualTo(200);
     }
 
