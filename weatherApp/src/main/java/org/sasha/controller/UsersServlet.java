@@ -1,5 +1,6 @@
 package org.sasha.controller;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.sasha.model.User;
 import org.sasha.dto.UserDto;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+@AllArgsConstructor
 public class UsersServlet extends HttpServlet {
 
     private final UserService userService = new UserServiceImpl();
@@ -27,7 +29,7 @@ public class UsersServlet extends HttpServlet {
         String action = getAction(request);
 
         switch (action) {
-            case "list":
+            case "users":
                 showUsers(request, response);
                 break;
             case "show":
@@ -60,10 +62,10 @@ public class UsersServlet extends HttpServlet {
         }
     }
 
-    private String getAction(HttpServletRequest request) {
+    public String getAction(HttpServletRequest request) {
         String pathInfo = request.getPathInfo();
         if (pathInfo == null) {
-            return "list";
+            return "users";
         }
         String[] pathParts = pathInfo.split("/");
         return ArrayUtils.get(pathParts, 1, "");
@@ -78,8 +80,10 @@ public class UsersServlet extends HttpServlet {
             throws IOException, ServletException {
 
         request.setAttribute("users", userService.findAll());
+        response.setStatus(200);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/users.jsp");
         requestDispatcher.forward(request, response);
+
     }
 
     private void showUser(HttpServletRequest request,
@@ -127,6 +131,7 @@ public class UsersServlet extends HttpServlet {
         userService.save(dto);
         session.setAttribute("flash", "Пользователь успешно создан");
         response.sendRedirect("/users");
+        response.setStatus(201);
     }
 
     private void deleteUser(HttpServletRequest request,

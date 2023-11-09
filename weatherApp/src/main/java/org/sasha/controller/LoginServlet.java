@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class LoginServlet extends HttpServlet {
-    public static long ID = 0;
+    public static long ID = 1;
     private final UserService userService = new UserServiceImpl();
     private final CurrentWeatherCheckService currentWeatherCheckService = new CurrentWeatherCheckServiceImpl();
 
@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
         Optional<User> userOpt = userService.findByEmail(email);
         User user = null;
         if (userOpt.isPresent()) {
-            user = userService.findByEmail(email).get();
+            user = userOpt.get();
             ID = user.getId();
             if (user.getPass().equals(password)) {
                 String region;

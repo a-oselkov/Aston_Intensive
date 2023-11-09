@@ -37,7 +37,7 @@ public class App {
      *
      * @return port number
      */
-    private static int getPort() {
+    public static int getPort() {
         String port = System.getenv(PORT);
         if (port != null) {
             return Integer.parseInt(port);
@@ -73,10 +73,10 @@ public class App {
         return app;
     }
 
-    public static String getFileContent(String fileName) throws IOException {
-        Path pathToSolution = Paths.get(fileName).toAbsolutePath();
-        return Files.readString(pathToSolution).trim();
-    }
+//    public static String getFileContent(String fileName) throws IOException {
+//        Path pathToSolution = Paths.get(fileName).toAbsolutePath();
+//        return Files.readString(pathToSolution).trim();
+//    }
 
     public static void main(String[] args) throws LifecycleException, IOException, SQLException {
 
@@ -90,8 +90,14 @@ public class App {
         app.start();
 
         UserDao userDao = new UserDao();
-        UserDto user = new UserDto("Ivan", "Novgorod", "1@1", "pass");
+
+        UserDto userDef = new UserDto("Default", "Moscow", "default", "123");
+        userDao.save(userDef);
+
+        UserDto user = new UserDto("Ivan", "Novgorod", "1@1", "123");
         userDao.save(user);
+
+
 
         app.getServer().await();
     }

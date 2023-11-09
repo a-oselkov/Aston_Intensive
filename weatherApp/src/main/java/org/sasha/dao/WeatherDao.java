@@ -17,7 +17,7 @@ public class WeatherDao {
         return Request.doGet(apiUrl).getBody();
     }
 
-    private WeatherDto parseDataFromApi(String dataFromApi) {
+    public WeatherDto parseDataFromApi(String dataFromApi) {
         ObjectMapper mapper = new JsonMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.findAndRegisterModules();

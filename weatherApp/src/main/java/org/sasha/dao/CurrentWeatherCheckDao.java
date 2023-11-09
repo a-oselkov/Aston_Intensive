@@ -18,7 +18,6 @@ import static org.sasha.controller.LoginServlet.ID;
 
 public class CurrentWeatherCheckDao {
     private final SessionFactory sessionFactory;
-    private Transaction transaction;
     private final UserDao userDao = new UserDao();
     private final LocationDao locationDao = new LocationDao();
 
@@ -27,28 +26,28 @@ public class CurrentWeatherCheckDao {
     }
 
     public void save(CurrentWeatherCheckDto dto) {
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
 
-            CurrentWeatherCheck check = new CurrentWeatherCheck();
-            User user = userDao.findById(dto.getUser_id()).get();
-            Location location = locationDao.findById(dto.getLocation_id()).get();
+        CurrentWeatherCheck check = new CurrentWeatherCheck();
+        User user = userDao.findById(dto.getUser_id()).get();
+        Location location = locationDao.findById(dto.getLocation_id()).get();
 
-            check.setTemp_c(dto.getTemp_c());
-            check.setFeelsLike_c(dto.getFeelsLike_c());
-            check.setCloud(dto.getCloud());
-            check.setUser(user);
-            check.setLocation(location);
+        check.setTemp_c(dto.getTemp_c());
+        check.setFeelsLike_c(dto.getFeelsLike_c());
+        check.setCloud(dto.getCloud());
+        check.setUser(user);
+        check.setLocation(location);
 
-            session.persist(check);
+        session.persist(check);
 
-            location.getUsers().add(user);
-            session.merge(location);
-            session.flush();
+        location.getUsers().add(user);
+        session.merge(location);
+        session.flush();
 
-            transaction.commit();
+        transaction.commit();
 
-        }
+
     }
 
 //    public Optional<CurrentWeatherCheck> findLastCheckByUser(User user) {

@@ -2,6 +2,7 @@ package org.sasha.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.sasha.model.User;
@@ -15,13 +16,13 @@ import java.util.Optional;
 public class UserDao {
 
     private final SessionFactory sessionFactory;
-    private Transaction transaction;
 
     public UserDao() {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     public void save(UserDto dto) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
@@ -44,6 +45,7 @@ public class UserDao {
 
     public List<User> findAll() {
         List<User> allUsers = new ArrayList<>();
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Query<User> query = session.createQuery("from User",
@@ -61,6 +63,7 @@ public class UserDao {
     }
 
     public Optional<User> findByEmail(String email) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Query<User> query = session.createQuery("from User " +
@@ -78,6 +81,7 @@ public class UserDao {
     }
 
     public Optional<User> findById(Long id) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             User user = session.find(User.class, id);
@@ -94,15 +98,11 @@ public class UserDao {
 
     public void deleteById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+            Transaction transaction = session.beginTransaction();
             User user = findById(id).get();
+            session.detach(user);
             session.remove(user);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
         }
     }
 }

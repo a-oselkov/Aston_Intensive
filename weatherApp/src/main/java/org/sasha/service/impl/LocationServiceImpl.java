@@ -12,8 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
-public class LocationServiseImpl implements LocationService {
-    private final LocationDao locationDao = new LocationDao();
+public class LocationServiceImpl implements LocationService {
+    private final LocationDao locationDao;
+
+    public LocationServiceImpl() {
+        this.locationDao = new LocationDao();
+    }
 
     @Override
     public long save(LocationDto location) {

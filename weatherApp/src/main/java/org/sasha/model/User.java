@@ -51,7 +51,7 @@ public class User {
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<CurrentWeatherCheck> checks = new ArrayList<>();
 
     public User(String name, String region, String email, String pass) {
@@ -61,11 +61,8 @@ public class User {
         this.pass = pass;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="user_location",
-            joinColumns=  @JoinColumn(name="user_id", referencedColumnName="id"),
-            inverseJoinColumns= @JoinColumn(name="location_id", referencedColumnName="id") )
-    private Set<Location> locations = new HashSet<>();
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Location> locations = new ArrayList<>();
 
     public CurrentWeatherCheck getLastCheck() {
         if (checks.isEmpty()) {

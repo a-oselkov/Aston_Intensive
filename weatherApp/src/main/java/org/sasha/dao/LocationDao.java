@@ -48,7 +48,7 @@ public class LocationDao {
         } else {
             //обновляем время
         }
-        return 0L;
+        return 1L;
     }
 
     public Optional<Location> findById(Long id) {

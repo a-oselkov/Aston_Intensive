@@ -21,8 +21,10 @@ import lombok.Setter;
 import org.hibernate.SessionFactory;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static jakarta.persistence.TemporalType.TIMESTAMP;
@@ -49,7 +51,7 @@ public class Location {
     @JoinTable(name="user_location",
             joinColumns=  @JoinColumn(name="location_id", referencedColumnName="id"),
             inverseJoinColumns= @JoinColumn(name="user_id", referencedColumnName="id") )
-    private Set<User> users = new HashSet<>();
+    private List<User> users = new ArrayList<>();
 
 //    @CreationTimestamp
 //    @Temporal(TIMESTAMP)

@@ -19,19 +19,21 @@
         </div>
     </div>
     <br>
+    <p> Погода в своем регионе: </p>
     <div class="card">
-        <div class="card-body">
-            <p>Регион: ${weather.getLocation().getRegion()}</p>
-            <p>Сегодня: ${weather.getLocation().getLocaltime()}</p>
-            <p>Погода сейчас: ${weather.getCurrent().getTemp_c()}</p>
+            <div class="card-body">
+                <p>Регион: ${weather2.getLocation().getRegion()}</p>
+                <p>Сегодня: ${weather2.getLocation().getLocaltime()}</p>
+                <p>Погода сейчас: ${weather2.getCurrent().getTemp_c()}</p>
+            </div>
         </div>
-    </div>
     <br>
+    <p> Последняя проверка: </p>
     <div class="card">
-        <div class="card-body">
-            <p>Регион: ${weather.getLocation().getRegion()}</p>
-            <p>Сегодня: ${weather.getLocation().getLocaltime()}</p>
-            <p>Погода сейчас: ${weather.getCurrent().getTemp_c()}</p>
+            <div class="card-body">
+                <p>Регион: ${weather1.getLocation().getRegion()}</p>
+                <p>Сегодня: ${weather1.getLocation().getLocaltime()}</p>
+                <p>Погода сейчас: ${weather1.getCurrent().getTemp_c()}</p>
+            </div>
         </div>
-    </div>
 </tag:application>
