@@ -97,8 +97,6 @@ public class App {
         UserDto user = new UserDto("Ivan", "Novgorod", "1@1", "123");
         userDao.save(user);
 
-
-
         app.getServer().await();
     }
 }
